@@ -6,9 +6,9 @@
 <h2> Project Name : Budget </h2>
 
 ![](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![](https://img.shields.io/badge/Angular-FF0000?style=for-the-badge&logo=angular&logoColor=red)
+![](https://img.shields.io/badge/Angular-FF0000?style=for-the-badge&logo=angular&logoColor=white)
 ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![](https://img.shields.io/badge/.NET-61DAFB?style=for-the-badge)
+![](https://img.shields.io/badge/.NET-61DAFB?style=for-the-badge&logo=.NET&logoColor=white)
 ![](https://img.shields.io/badge/Postgres-3982CE?style=for-the-badge&logo=Postgres&logoColor=white)
 
 <!-- <img src ="./assets/bg-3.webp" width="80%"> -->
