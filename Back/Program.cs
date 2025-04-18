@@ -40,16 +40,11 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost4200", policy =>
+     options.AddPolicy("AllowAllClients", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-    
-    options.AddPolicy("AllowProduction", policy =>
-    {
-        policy.WithOrigins("https://budget-front-6kei.onrender.com")
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://budget-front-6kei.onrender.com")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -60,8 +55,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost4200");
-app.UseCors("AllowProduction");
+app.UseCors("AllowAllClients");
 
 app.UseAuthentication();
 app.UseAuthorization();
