@@ -31,4 +31,6 @@ Budget is a budgeting app made for myself and my wife. It is meant to aid us in 
 - **Angular**: A Javascript frontend framework for building server-side rendering and static web applications.
 - **.NET Web API**: Modular and extensible REST API.
 - **EF Core**: Used to maintain synchronization between local and production postgres instances.
-- **Npm Package**: A fast JavaScript runtime that includes a package manager, task runner, and more.
+- **Neon**: A free postgres server.
+- **Render**: A free linux server to host the .NET Web API.
+- **Vercel**: Free hosting for the Angular app.
