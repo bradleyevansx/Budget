@@ -2,12 +2,8 @@
   "version": 2,
   "public": true,
   "name": "front",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api"
-    }
-  ],
+  "devCommand": "node dist/front/server/server.mjs",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
   "functions": {
     "api/index.js": {
       "includeFiles": "dist/front/**"
