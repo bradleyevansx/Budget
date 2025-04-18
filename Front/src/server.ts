@@ -1,3 +1,4 @@
+// filepath: /Users/bradleyevans/Desktop/Budget/Front/src/server.ts
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import express from 'express';
@@ -5,9 +6,15 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
 
-const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-const browserDistFolder = resolve(serverDistFolder, '../browser');
-const indexHtml = join(serverDistFolder, 'index.server.html');
+// --- Export these for Edge Function ---
+// Note: Path resolution might need adjustment based on Vercel's build output structure.
+// Ensure these paths are correct relative to where server.mjs runs in the Edge environment.
+export const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+export const browserDistFolder = resolve(serverDistFolder, '../browser');
+export const indexHtml = join(serverDistFolder, 'index.server.html');
+export { bootstrap }; // Re-export bootstrap
+export { CommonEngine, APP_BASE_HREF }; // Re-export necessary Angular parts
+// --- End Exports ---
 
 const app = express();
 const commonEngine = new CommonEngine();
@@ -26,6 +33,7 @@ const commonEngine = new CommonEngine();
 
 /**
  * Serve static files from /browser
+ * This part will likely be handled by Vercel's static file serving, not the Edge function.
  */
 app.get(
   '**',
@@ -37,6 +45,7 @@ app.get(
 
 /**
  * Handle all other requests by rendering the Angular application.
+ * This logic will be replicated in the Edge Function.
  */
 app.get('**', (req, res, next) => {
   const { protocol, originalUrl, baseUrl, headers } = req;
@@ -56,6 +65,7 @@ app.get('**', (req, res, next) => {
 /**
  * Start the server if this module is the main entry point.
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ * Keep this commented out for serverless/edge deployment.
  */
 // if (isMainModule(import.meta.url)) {
 //   const port = process.env['PORT'] || 4000;
@@ -64,4 +74,4 @@ app.get('**', (req, res, next) => {
 //   });
 // }
 
-export default app;
+export default app; // Keep default export if needed elsewhere
