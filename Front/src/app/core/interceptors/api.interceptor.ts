@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpHandler,
 } from '@angular/common/http';
-import { environment } from '../../../environments/dev';
+import { environment } from '../../../environments/prod';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
