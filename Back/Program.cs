@@ -46,6 +46,13 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
+    
+    options.AddPolicy("AllowProduction", policy =>
+    {
+        policy.WithOrigins("https://budget-front-6kei.onrender.com")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
 builder.Services.AddControllers();
@@ -54,6 +61,7 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 app.UseCors("AllowLocalhost4200");
+app.UseCors("AllowProduction");
 
 app.UseAuthentication();
 app.UseAuthorization();
