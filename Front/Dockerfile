@@ -13,7 +13,7 @@ COPY . .
 
 # Build the application for production (including SSR server)
 # The output path is defined in angular.json as dist/front
-RUN npm run build
+RUN npm run build:prod
 
 # Stage 2: Setup the production environment using Node.js server
 FROM node:slim
