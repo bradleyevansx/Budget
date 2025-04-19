@@ -1,18 +1,22 @@
-<div class="w-full">
-  <p-table [value]="transactions" [rows]="10" [paginator]="true">
-    <ng-template #header>
-      <tr>
-        <th class="w-14">Date</th>
-        <th>Location</th>
-        <th class="w-14">Price</th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-transaction>
-      <tr>
-        <td>{{ formatDate(transaction.date) }}</td>
-        <td>{{ transaction.location }}</td>
-        <td>{{ formatMoney(transaction.price) }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+<p-table
+  [value]="transactions"
+  [rows]="25"
+  [paginator]="true"
+  scrollHeight="flex"
+  [scrollable]="true"
+>
+  <ng-template #header>
+    <tr>
+      <th class="w-14">Date</th>
+      <th>Location</th>
+      <th class="w-14">Price</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-transaction>
+    <tr>
+      <td>{{ formatDate(transaction.date) }}</td>
+      <td>{{ transaction.location }}</td>
+      <td>{{ formatMoney(transaction.price) }}</td>
+    </tr>
+  </ng-template>
+</p-table>

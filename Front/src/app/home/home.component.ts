@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { TransactionService } from '../core/services/transaction.service';
 import { Transaction } from '../core/models/transaction.model';
 import { TableModule } from 'primeng/table';
 import { toUsdString } from '../core/sdk/moneyHelpers';
+
 @Component({
   selector: 'app-home',
   imports: [TableModule],
