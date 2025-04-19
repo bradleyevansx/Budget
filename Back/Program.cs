@@ -17,6 +17,11 @@ builder.Services.AddScoped<UserDetailsService>();
 builder.Services.AddScoped<TransactionBus>();
 builder.Services.AddScoped<TransactionRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add(new AppQueryConverter());
+    });
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]!);

@@ -1,12 +1,14 @@
 using System.Linq.Expressions;
 using Back.Business.Users;
+using Back.Controllers;
+using Back.Models;
 using Back.Repositories.Transactions;
 using Back.Repositories.Users;
 using Back.SDK;
 
 namespace Back.Business.Transactions;
 
-public class TransactionBus : IBusiness<Transaction, NewBusTransaction, TransactionQueryBus, UpdateBusTransaction>
+public class TransactionBus : IBusiness<Transaction, NewBusTransaction, UpdateBusTransaction>
 {
     private readonly TransactionRepository _transactionRepository;
     private readonly UserDetailsService _userDetailsService;
@@ -29,9 +31,9 @@ public class TransactionBus : IBusiness<Transaction, NewBusTransaction, Transact
         return res.ToBus();
     }
     
-    public async Task<List<Transaction>> GetWhereAsync(TransactionQueryBus query, Pagination? pagination)
+    public async Task<List<Transaction>> GetWhereAsync(IBusQuery? query, Pagination? pagination)
     {
-        var dbQuery = query.ToDb();
+        var dbQuery = DbQueryBuilder.BuildPredicate<DbTransaction>(query);
         var res = await _transactionRepository.GetWhereAsync(dbQuery, pagination);
         return res.Select(x => x.ToBus()).ToList();
     }

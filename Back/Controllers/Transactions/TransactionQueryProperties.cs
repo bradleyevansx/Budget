@@ -1,6 +1,11 @@
 namespace Back.Controllers.Transactions;
 
-public class TransactionQueryProperties
+
+public enum TransactionQueryProperties
 {
-    
+    Id,
+    UserId,
+    Price,
+    Location,
+    Date,
 }

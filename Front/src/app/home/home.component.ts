@@ -23,7 +23,8 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.transactionService.getWhere({}).subscribe((res) => {
+    this.transactionService.getWhere().subscribe((res) => {
+      console.log(res.length);
       this.transactions = res.map((x) => ({
         ...x,
         date: new Date(x.date),

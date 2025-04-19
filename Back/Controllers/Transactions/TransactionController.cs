@@ -1,8 +1,13 @@
 using System.Security.Claims;
+using System.Text.Json;
+using Back.Business;
 using Back.Business.Transactions;
+using Back.Controllers.Filters;
 using Back.Controllers.Transactions;
+using Back.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Back.Controllers;
 
@@ -25,12 +30,16 @@ public class TransactionController : ControllerBase
         return Ok(res.ToApp());
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetWhere([FromQuery] TransactionQueryApp query)
+    [HttpPost("get")]
+    public async Task<IActionResult> GetWhere([FromBody] QueryRequest body)
     {
-        var bus = query.ToBus();
-        var page = query.ToPage();
-        var res = await _transactionBus.GetWhereAsync(bus, page);
+        IBusQuery? busLayer = null;
+        if (body.Query != null)
+        {
+            busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbTransaction>(body.Query);
+        }
+
+        var res = await _transactionBus.GetWhereAsync(busLayer, null);
         return Ok(res.Select(x => x.ToApp()).ToList());
     }
 

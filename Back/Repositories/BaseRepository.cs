@@ -1,6 +1,10 @@
 using System.Linq.Expressions;
+using System.Text.Json;
 using Back.Business;
+using Back.Controllers;
+using Back.Controllers.Filters;
 using Back.Data;
+using Back.Models;
 using Back.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,5 +97,32 @@ public abstract class BaseRepository<T, TO, TU> : IRepository<T, TO, TU> where T
         _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
         return entity;
+    }
+
+    public async Task<List<DbTransaction>?> Test()
+    {
+        var appLayer = new AppQueryLayer
+        {
+            Operator = 0,
+            Children = new List<IAppQuery>
+            {
+                new AppQuery { PropertyName = "Location", Comparator = 0, Value = "p" },
+            }
+        };
+
+
+        var busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbTransaction>(appLayer);
+        
+        Console.Write("BUSLAYER: ");
+        Console.WriteLine(JsonSerializer.Serialize(busLayer, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        }));
+        
+
+        var predicate = DbQueryBuilder.BuildPredicate<DbTransaction>(busLayer);
+        var result = await _context.Transactions.Where(predicate).ToListAsync();
+
+        return result;
     }
 }

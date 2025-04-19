@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Back.Controllers;
 using Back.Controllers.Filters;
 
@@ -13,8 +14,8 @@ public static class AppToBusQueryConverter
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
 
             var propertyType = GetPropertyType(propType);
-
-            return new BusQuery()
+            
+           return new BusQuery()
             {
                 PropertyName = simple.PropertyName,
                 Comparator = simple.Comparator,

@@ -1,6 +1,11 @@
-namespace Back.Controllers.Filters;
+using System.Text.Json.Serialization;
 
-public class AppQuery
+namespace Back.Controllers.Filters;
+public class AppQuery : IAppQuery
 {
+    public Comparator Comparator { get; set; }
     
+    public string PropertyName { get; set; }
+    
+    public object Value { get; set; }
 }

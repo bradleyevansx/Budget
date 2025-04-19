@@ -1,13 +1,14 @@
 using System.Linq.Expressions;
 using Back.Business.Transactions;
+using Back.Controllers;
 
 namespace Back.Business;
 
-public interface IBusiness<T, TN, TQ, TU> where T : class, IBusEntity where TN : class, INewBusEntity where TQ : class, IQueryBusEntity where TU : class, IUpdateBusEntity
+public interface IBusiness<T, TN, TU> where T : class, IBusEntity where TN : class, INewBusEntity where TU : class, IUpdateBusEntity
 {
     public Task<T> CreateAsync(TN entity);
 
-    public Task<List<T>> GetWhereAsync(TQ predicate, Pagination pagination);
+    public Task<List<T>> GetWhereAsync(IBusQuery predicate, Pagination pagination);
 
     public Task<T?> UpdateAsync(TU entity);
 

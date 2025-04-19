@@ -1,6 +1,6 @@
 namespace Back.Controllers;
 
-public enum PropertyType
+public enum BusPropertyType
 {
     String,
     Number,

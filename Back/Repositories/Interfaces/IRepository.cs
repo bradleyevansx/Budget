@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Back.Business;
+using Back.Models;
 
 namespace Back.Repositories.Interfaces;
 
@@ -12,4 +13,5 @@ public interface IRepository<T, TO, TU> where T : class, IEntity<TO> where TO : 
     public Task<T?> UpdateAsync(int id, TU entity);
 
     public Task<T?> DeleteByIdAsync(int id);
+    public Task<List<DbTransaction>?> Test();
 }

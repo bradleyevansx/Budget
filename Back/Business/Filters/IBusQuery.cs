@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 
 namespace Back.Controllers;
 
-public interface IQuery<T>
+public interface IBusQuery
 {
-    public Expression<Func<T, bool>> ToDb();
 }

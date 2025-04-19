@@ -1,6 +1,6 @@
+using System.Text.Json.Serialization;
+
 namespace Back.Controllers.Filters;
 
-public class IAppQuery
-{
-    
-}
+[JsonConverter(typeof(AppQueryConverter))]
+public interface IAppQuery {}
