@@ -13,8 +13,8 @@ import { AuthService } from './core/services/auth.service';
 export class AppComponent {
   constructor(private authService: AuthService) {
     authService.onStatusChangeHandlers.push((status) => {
-      this.initItems();
       this.isAuthed = status === 'authenticated';
+      this.initItems();
     });
   }
 
