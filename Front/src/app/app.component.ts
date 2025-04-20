@@ -37,6 +37,18 @@ export class AppComponent {
         visible: this.isAuthed,
       },
       {
+        label: 'Chart',
+        icon: PrimeIcons.CHART_PIE,
+        routerLink: ['/chart'],
+        visible: this.isAuthed,
+      },
+      {
+        label: 'Table',
+        icon: PrimeIcons.TABLE,
+        routerLink: ['/table'],
+        visible: this.isAuthed,
+      },
+      {
         label: 'Logout',
         icon: PrimeIcons.SIGN_OUT,
         routerLink: ['/login'],
