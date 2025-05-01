@@ -15,6 +15,7 @@ public class BusTransaction : IBusEntity
     public AppTransaction ToApp()
     {
         var res = new AppTransaction();
+        res.AllocationId = AllocationId;
         res.Id = Id;
         res.UserId = UserId;
         res.Price = Price;

@@ -9,6 +9,7 @@
     <tr>
       <th class="w-14">Date</th>
       <th>Location</th>
+      <th>Allocation</th>
       <th class="w-14">Price</th>
     </tr>
   </ng-template>
@@ -16,6 +17,13 @@
     <tr>
       <td>{{ formatDate(transaction.date) }}</td>
       <td>{{ transaction.location }}</td>
+      <td>
+        <app-allocate-transaction
+          (onAllocate)="handleAllocate()"
+          [transaction]="transaction"
+          [allocations]="allocations"
+        ></app-allocate-transaction>
+      </td>
       <td>{{ formatMoney(transaction.price) }}</td>
     </tr>
   </ng-template>

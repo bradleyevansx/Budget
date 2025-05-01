@@ -23,8 +23,8 @@ export class TransactionService {
   }
 
   update(t: Transaction): Observable<Partial<Transaction> & { id: number }> {
-    return this.http.put<Partial<Transaction> & { id: number }>(
-      `/api/transaction/${t.id}`,
+    return this.http.patch<Partial<Transaction> & { id: number }>(
+      `/api/transaction`,
       t
     );
   }

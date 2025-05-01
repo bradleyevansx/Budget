@@ -1,0 +1,14 @@
+<p-select
+  [options]="allocations"
+  [(ngModel)]="selectedAllocation"
+  optionLabel="name"
+  placeholder="Allocate Transaction"
+  class="w-full md:w-56"
+/>
+<p-button
+  label="Allocate"
+  icon="pi pi-check"
+  (click)="allocateTransaction()"
+  [disabled]="!selectedAllocation"
+  class="ml-2"
+></p-button>

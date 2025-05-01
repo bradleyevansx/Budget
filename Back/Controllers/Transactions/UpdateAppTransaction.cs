@@ -14,6 +14,7 @@ public class UpdateAppTransaction
     public UpdateBusTransaction ToBus()
     {
         var res = new UpdateBusTransaction();
+        res.AllocationId = AllocationId;
         res.Id = Id;
         res.UserId = UserId;
         res.Price = Price;

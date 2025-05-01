@@ -7,9 +7,10 @@ import { Comparator, Operator } from '../core/models/query.model';
 import { SelectedMonthService } from '../core/services/selectedMonth.service';
 import { AllocationService } from '../core/services/allocation.service';
 import { Allocation } from '../core/models/allocation.model';
+import { AllocateTransactionComponent } from './allocate-transaction/allocate-transaction.component';
 @Component({
   selector: 'app-transactions-table',
-  imports: [TableModule],
+  imports: [TableModule, AllocateTransactionComponent],
   templateUrl: './transactions-table.component.html',
   styleUrl: './transactions-table.component.css',
 })
@@ -116,5 +117,10 @@ export class TransactionsTableComponent {
 
   formatMoney(money: number): string {
     return toUsdString(money);
+  }
+
+  handleAllocate() {
+    this.initTransactions();
+    this.initAllocations();
   }
 }

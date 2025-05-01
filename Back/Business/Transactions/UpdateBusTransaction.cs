@@ -14,7 +14,7 @@ public class UpdateBusTransaction : IUpdateBusEntity
     public UpdateDbTransaction ToDb()
     {
         var res = new UpdateDbTransaction();
-        
+        res.AllocationId = AllocationId;
         res.UserId = UserId;
         res.Price = Price;
         res.Location = Location;

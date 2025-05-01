@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Back.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TransactionController : ControllerBase
@@ -42,7 +43,7 @@ public class TransactionController : ControllerBase
         var res = await _transactionBus.GetWhereAsync(busLayer, null);
         return Ok(res.Select(x => x.ToApp()).ToList());
     }
-
+    
     [HttpPatch]
     public async Task<IActionResult> UpdateTransaction([FromBody] UpdateAppTransaction entity)
     {

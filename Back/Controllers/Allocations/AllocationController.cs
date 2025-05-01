@@ -3,10 +3,12 @@ using Back.Business.Transactions;
 using Back.Controllers.Filters;
 using Back.Controllers.Transactions;
 using Back.Repositories.Allocations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back.Controllers.Allocations;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AllocationController : ControllerBase
