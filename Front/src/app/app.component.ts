@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { AuthService } from './core/services/auth.service';
+import { MonthSelectComponent } from './core/components/month-select/month-select.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MenubarModule],
+  imports: [RouterOutlet, MenubarModule, MonthSelectComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

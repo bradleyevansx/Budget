@@ -1,6 +1,5 @@
-import { Component, Input, Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { SelectedMonthService } from '../../services/selectedMonth.service';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -9,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './month-select.component.html',
   styleUrl: './month-select.component.css',
 })
-export class MonthSelectComponent {
+export class MonthSelectComponent implements OnInit {
   months = [
     { month: 0, name: 'January' },
     { month: 1, name: 'February' },
@@ -25,39 +24,46 @@ export class MonthSelectComponent {
     { month: 11, name: 'December' },
   ];
 
-  @Input() value: Date;
-  @Output() onValueChange: EventEmitter<Date> = new EventEmitter<Date>();
+  selectedMonth: Date;
 
-  increaseMonth() {
-    const newDate = new Date(this.value);
+  constructor(private selectedMonthService: SelectedMonthService) {}
+
+  ngOnInit(): void {
+    this.selectedMonthService.selectedMonth$.subscribe((month: Date) => {
+      this.selectedMonth = month;
+    });
+  }
+
+  increaseMonth(): void {
+    const newDate = new Date(this.selectedMonth);
     if (newDate.getMonth() === 11) {
       newDate.setMonth(0);
       newDate.setFullYear(newDate.getFullYear() + 1);
     } else {
       newDate.setMonth(newDate.getMonth() + 1);
     }
-    this.onValueChange.emit(newDate);
+    this.selectedMonthService.setSelectedMonth(newDate);
   }
 
-  decreaseMonth() {
-    const newDate = new Date(this.value);
+  decreaseMonth(): void {
+    const newDate = new Date(this.selectedMonth);
     if (newDate.getMonth() === 0) {
       newDate.setMonth(11);
       newDate.setFullYear(newDate.getFullYear() - 1);
     } else {
       newDate.setMonth(newDate.getMonth() - 1);
     }
-    this.onValueChange.emit(newDate);
+    this.selectedMonthService.setSelectedMonth(newDate);
   }
 
-  getSelectedMonth() {
+  getSelectedMonth(): string {
     const name = this.months.find(
-      (x) => x.month === this.value.getMonth()
+      (x) => x.month === this.selectedMonth.getMonth()
     )?.name;
-    return name;
+    return name || '';
   }
 
-  getSelectedYear() {
-    return this.value.getFullYear();
+  getSelectedYear(): number {
+    return this.selectedMonth.getFullYear();
   }
 }

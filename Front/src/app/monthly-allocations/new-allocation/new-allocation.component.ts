@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,7 +13,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { AllocationService } from '../../core/services/allocation.service';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { MonthSelectComponent } from '../../core/components/month-select/month-select.component';
+import { SelectedMonthService } from '../../core/services/selectedMonth.service';
 import { NewAllocationForm } from './NewAllocationForm';
 import { Allocation } from '../../core/models/allocation.model';
 import { CommonModule } from '@angular/common';
@@ -29,20 +29,21 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    MonthSelectComponent,
     CommonModule,
   ],
   templateUrl: './new-allocation.component.html',
   styleUrl: './new-allocation.component.css',
 })
-export class NewAllocationComponent {
+export class NewAllocationComponent implements OnInit {
   @Output() onSubmit = new EventEmitter<Allocation>();
 
   visible: boolean = false;
   newAllocation: FormGroup<NewAllocationForm>;
+
   constructor(
     private fb: FormBuilder,
-    private allocationService: AllocationService
+    private allocationService: AllocationService,
+    private selectedMonthService: SelectedMonthService
   ) {
     this.newAllocation = this.fb.group<NewAllocationForm>({
       name: this.fb.control('', Validators.required),
@@ -52,6 +53,21 @@ export class NewAllocationComponent {
         Validators.required
       ),
     });
+  }
+
+  ngOnInit(): void {
+    // Subscribe to the selectedMonth$ observable to update the form's date field
+    this.selectedMonthService.selectedMonth$.subscribe(
+      (selectedMonth: Date) => {
+        this.newAllocation.patchValue({
+          date: new Date(
+            selectedMonth.getFullYear(),
+            selectedMonth.getMonth(),
+            1
+          ),
+        });
+      }
+    );
   }
 
   show() {

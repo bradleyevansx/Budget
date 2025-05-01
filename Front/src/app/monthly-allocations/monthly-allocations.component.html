@@ -1,8 +1,3 @@
-<app-month-select
-  [value]="selectedMonth"
-  (onValueChange)="handleSelectedMonthChange($event)"
-></app-month-select>
-
 <div
   class="flex gap-4 flex-col sm:flex-row sm:flex-wrap w-full overflow-auto h-96"
 >
@@ -12,5 +7,5 @@
       [allocation]="item"
     ></app-allocation>
   </div>
-  <app-new-allocation (onSubmit)="handleSubmit($event)"></app-new-allocation>
+  <app-new-allocation (onSubmit)="handleSubmit()"></app-new-allocation>
 </div>

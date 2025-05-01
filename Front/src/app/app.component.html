@@ -1,6 +1,10 @@
 <main>
   <div class="h-screen flex flex-col p-4">
-    <p-menubar [model]="items" [hidden]="!isAuthed" />
+    <p-menubar [model]="items" [hidden]="!isAuthed">
+      <ng-template #end>
+        <app-month-select></app-month-select>
+      </ng-template>
+    </p-menubar>
     <div class="flex-grow overflow-hidden">
       <router-outlet />
     </div>

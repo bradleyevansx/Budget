@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataViewModule } from 'primeng/dataview';
 import { Allocation } from '../core/models/allocation.model';
 import { AllocationService } from '../core/services/allocation.service';
@@ -6,8 +6,9 @@ import { NewAllocationComponent } from './new-allocation/new-allocation.componen
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { AllocationComponent } from './allocation/allocation.component';
-import { MonthSelectComponent } from '../core/components/month-select/month-select.component';
 import { Comparator, Operator } from '../core/models/query.model';
+import { SelectedMonthService } from '../core/services/selectedMonth.service';
+
 @Component({
   selector: 'app-monthly-allocations',
   imports: [
@@ -16,16 +17,26 @@ import { Comparator, Operator } from '../core/models/query.model';
     CardModule,
     CommonModule,
     AllocationComponent,
-    MonthSelectComponent,
   ],
   templateUrl: './monthly-allocations.component.html',
   styleUrl: './monthly-allocations.component.css',
 })
-export class MonthlyAllocationsComponent {
+export class MonthlyAllocationsComponent implements OnInit {
   selectedMonth: Date = new Date();
   allocations: Allocation[] = [];
   loading: boolean = false;
-  constructor(private allocationService: AllocationService) {}
+
+  constructor(
+    private allocationService: AllocationService,
+    private selectedMonthService: SelectedMonthService
+  ) {}
+
+  ngOnInit(): void {
+    this.selectedMonthService.selectedMonth$.subscribe((month: Date) => {
+      this.selectedMonth = month;
+      this.initAllocations();
+    });
+  }
 
   initAllocations() {
     this.loading = true;
@@ -66,16 +77,7 @@ export class MonthlyAllocationsComponent {
       });
   }
 
-  ngOnInit() {
-    this.initAllocations();
-  }
-
-  handleSubmit(newAllocation: Allocation) {
-    this.initAllocations();
-  }
-
-  handleSelectedMonthChange(newDate: Date) {
-    this.selectedMonth = newDate;
+  handleSubmit() {
     this.initAllocations();
   }
 
