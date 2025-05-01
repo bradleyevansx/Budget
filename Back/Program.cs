@@ -1,6 +1,8 @@
 using System.Text;
+using Back.Business.Allocations;
 using Back.Business.Transactions;
 using Back.Data;
+using Back.Repositories.Allocations;
 using Back.Repositories.Transactions;
 using Back.Repositories.Users;
 using Back.SDK;
@@ -16,6 +18,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserDetailsService>();
 builder.Services.AddScoped<TransactionBus>();
 builder.Services.AddScoped<TransactionRepository>();
+builder.Services.AddScoped<AllocationBus>();
+builder.Services.AddScoped<AllocationRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>

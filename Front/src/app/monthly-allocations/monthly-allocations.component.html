@@ -1,0 +1,14 @@
+<app-month-select
+  [value]="selectedMonth"
+  (onValueChange)="handleSelectedMonthChange($event)"
+></app-month-select>
+
+<div class="flex gap-4 flex-col sm:flex-row flex-wrap w-full">
+  <div *ngFor="let item of allocations" class="w-full sm:w-96">
+    <app-allocation
+      (onDelete)="handleDelete()"
+      [allocation]="item"
+    ></app-allocation>
+  </div>
+  <app-new-allocation (onSubmit)="handleSubmit($event)"></app-new-allocation>
+</div>

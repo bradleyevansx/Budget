@@ -8,7 +8,7 @@ public static class AppToBusQueryConverter
     {
         if (appQuery is AppQuery simple)
         {
-            var propInfo = typeof(T).GetProperty(simple.PropertyName)
+            var propInfo = typeof(T).GetProperty(ConvertCamelToPascal(simple.PropertyName))
                            ?? throw new InvalidOperationException($"Property '{simple.PropertyName}' not found on {typeof(T).Name}");
 
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
@@ -45,5 +45,13 @@ public static class AppToBusQueryConverter
         if (type.IsPrimitive || type == typeof(decimal)) return BusPropertyType.Number;
 
         throw new NotSupportedException($"Unsupported type {type.Name}");
+    }
+    
+    private static string ConvertCamelToPascal(string camelCase)
+    {
+        if (string.IsNullOrEmpty(camelCase))
+            return camelCase;
+
+        return char.ToUpper(camelCase[0]) + camelCase.Substring(1);
     }
 }

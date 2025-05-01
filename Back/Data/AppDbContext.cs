@@ -1,4 +1,5 @@
 using Back.Models;
+using Back.Repositories.Allocations;
 using Back.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -10,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<DbUser> Users => Set<DbUser>();
     public DbSet<DbTransaction> Transactions => Set<DbTransaction>();
+    public DbSet<DbAllocation> Allocations => Set<DbAllocation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

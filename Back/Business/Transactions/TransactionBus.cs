@@ -8,7 +8,7 @@ using Back.SDK;
 
 namespace Back.Business.Transactions;
 
-public class TransactionBus : IBusiness<Transaction, NewBusTransaction, UpdateBusTransaction>
+public class TransactionBus : IBusiness<BusTransaction, NewBusTransaction, UpdateBusTransaction>
 {
     private readonly TransactionRepository _transactionRepository;
     private readonly UserDetailsService _userDetailsService;
@@ -21,7 +21,7 @@ public class TransactionBus : IBusiness<Transaction, NewBusTransaction, UpdateBu
         _userRepository = userRepository;
     }
     
-    public async Task<Transaction> CreateAsync(NewBusTransaction entity)
+    public async Task<BusTransaction> CreateAsync(NewBusTransaction entity)
     {
         var userId = _userDetailsService.GetUserId();
         var dbTransaction = entity.ToDb(userId);
@@ -31,14 +31,14 @@ public class TransactionBus : IBusiness<Transaction, NewBusTransaction, UpdateBu
         return res.ToBus();
     }
     
-    public async Task<List<Transaction>> GetWhereAsync(IBusQuery? query, Pagination? pagination)
+    public async Task<List<BusTransaction>> GetWhereAsync(IBusQuery? query, Pagination? pagination)
     {
         var dbQuery = DbQueryBuilder.BuildPredicate<DbTransaction>(query);
         var res = await _transactionRepository.GetWhereAsync(dbQuery, pagination);
         return res.Select(x => x.ToBus()).ToList();
     }
 
-    public async Task<Transaction?> UpdateAsync(UpdateBusTransaction entity)
+    public async Task<BusTransaction?> UpdateAsync(UpdateBusTransaction entity)
     {
         if (entity.UserId != null && !(await UserExists(entity.UserId.Value)))
         {
@@ -55,7 +55,7 @@ public class TransactionBus : IBusiness<Transaction, NewBusTransaction, UpdateBu
         return res.ToBus();
     }
     
-   public async Task<Transaction?> DeleteByIdAsync(int id)
+   public async Task<BusTransaction?> DeleteByIdAsync(int id)
    {
        var res = await _transactionRepository.DeleteByIdAsync(id);
        

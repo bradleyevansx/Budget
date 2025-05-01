@@ -19,8 +19,8 @@ export interface QueryLayer<T> {
   children: Query<T>[];
 }
 
-export interface Query<T> {
+export interface Query<T, Property = keyof T> {
   comparator: Comparator;
-  propertyName: keyof T;
+  propertyName: Property;
   value: string | number | boolean | Date;
 }

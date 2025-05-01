@@ -1,40 +1,36 @@
-<p-card header="Complete Transaction" class="shadow-lg">
-  <form
-    [formGroup]="transactionForm"
-    (ngSubmit)="onSubmit()"
-    class="flex flex-col gap-6 p-4"
-  >
-    <p-float-label>
-      <input
-        formControlName="price"
-        pInputText
-        id="price"
-        pSize="small"
-        type="number"
-        class="w-full"
-      />
-      <label for="price">Price</label>
-    </p-float-label>
-    <p-float-label>
-      <input
-        formControlName="location"
-        pInputText
-        id="location"
-        pSize="small"
-        type="text"
-        class="w-full"
-      />
-      <label for="location">Location</label>
-    </p-float-label>
-    <p-float-label>
-      <p-date-picker
-        formControlName="date"
-        id="date"
-        pSize="small"
-        class="w-full"
-      />
-      <label for="date">Date</label>
-    </p-float-label>
-    <p-button class="w-full" type="submit"> Submit </p-button>
-  </form>
-</p-card>
+<form
+  [formGroup]="transactionForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-6 p-4"
+>
+  <span>
+    <label for="price">Price</label>
+    <input
+      formControlName="price"
+      pInputText
+      id="price"
+      type="number"
+      class="w-full"
+    />
+  </span>
+  <span>
+    <label for="location">Location</label>
+    <input
+      formControlName="location"
+      pInputText
+      id="location"
+      type="text"
+      class="w-full"
+    />
+  </span>
+  <span class="flex flex-col gap-1 relative">
+    <label for="date">Date</label>
+    <p-date-picker
+      formControlName="date"
+      id="date"
+      class="w-fit z-10"
+      appendTo="body"
+    />
+  </span>
+  <p-button class="w-full" type="submit"> Submit </p-button>
+</form>

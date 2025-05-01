@@ -13,5 +13,4 @@ public interface IRepository<T, TO, TU> where T : class, IEntity<TO> where TO : 
     public Task<T?> UpdateAsync(int id, TU entity);
 
     public Task<T?> DeleteByIdAsync(int id);
-    public Task<List<DbTransaction>?> Test();
 }

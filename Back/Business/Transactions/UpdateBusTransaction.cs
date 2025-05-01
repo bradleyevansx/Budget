@@ -9,6 +9,7 @@ public class UpdateBusTransaction : IUpdateBusEntity
     public decimal? Price { get; set; } = null;
     public string? Location { get; set; } = null;
     public DateTime? Date { get; set; } = null;
+    public int? AllocationId { get; set; } = null;
 
     public UpdateDbTransaction ToDb()
     {

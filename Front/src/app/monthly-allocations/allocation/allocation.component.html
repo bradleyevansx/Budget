@@ -1,0 +1,30 @@
+<p-card class="w-full">
+  <div class="flex justify-between">
+    <h3 class="text-3xl font-bold text-gray-800 whitespace-nowrap truncate">
+      {{ allocation.name }} TestingTestingTestingTestingTestingTesting
+    </h3>
+    <p-menu #menu [model]="items" [popup]="true" />
+    <p-button
+      (click)="menu.toggle($event)"
+      icon="pi pi-ellipsis-v"
+      severity="secondary"
+      size="small"
+    />
+  </div>
+  <div class="w-full border-t border-t-gray-200 my-2"></div>
+  <p><strong>Allocated:</strong> {{ allocation.amount }}</p>
+  <p><strong>Actual:</strong> {{ totalTransactionsAmount }}</p>
+  <p-button
+    (click)="showDialog()"
+    icon="pi pi-cart-plus"
+    severity="secondary"
+  />
+  <p-dialog [modal]="true" [(visible)]="visible">
+    <div>
+      <app-new-transaction
+        (onFinish)="handleNewTransactionCreated()"
+        [allocationId]="allocation.id"
+      ></app-new-transaction>
+    </div>
+  </p-dialog>
+</p-card>

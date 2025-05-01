@@ -1,6 +1,6 @@
 namespace Back.Business.Users;
 
-public class User : IBusEntity
+public class BusUser : IBusEntity
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;

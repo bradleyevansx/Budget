@@ -5,6 +5,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { NewTransactionComponent } from './new-transaction/new-transaction.component';
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 import { TransactionsGraphsComponent } from './transactions-graphs/transactions-graphs.component';
+import { MonthlyAllocationsComponent } from './monthly-allocations/monthly-allocations.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,6 +23,11 @@ export const routes: Routes = [
   {
     path: 'chart',
     component: TransactionsGraphsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'allocations',
+    component: MonthlyAllocationsComponent,
     canActivate: [AuthGuard],
   },
 ];

@@ -4,4 +4,5 @@ export interface Transaction {
   price: number;
   location: string;
   date: Date;
+  allocationId?: number;
 }

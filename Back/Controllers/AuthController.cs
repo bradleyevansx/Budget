@@ -61,9 +61,5 @@ public class AuthController: ControllerBase
         return Ok(new { token });
     }
 
-    [HttpPost("test")]
-    public async Task<IActionResult> Test()
-    {
-        return Ok(await _userRepo.Test());
-    }
+   
 }

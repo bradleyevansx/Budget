@@ -34,9 +34,15 @@ public class AppQueryConverter : JsonConverter<IAppQuery>
             return layer;
         }
 
-        // If it's not a layer, deserialize into an AppQuery
-        return JsonSerializer.Deserialize<AppQuery>(root.GetRawText(), options);
+        return new AppQuery
+        {
+            PropertyName = root.GetProperty("propertyName").GetString()!,
+            Comparator = (Comparator)root.GetProperty("comparator").GetInt32(),
+            Value = ExtractValue(root.GetProperty("value")),
+        };
     }
+    
+    
 
     public override void Write(Utf8JsonWriter writer, IAppQuery value, JsonSerializerOptions options)
     {
@@ -61,13 +67,12 @@ public class AppQueryConverter : JsonConverter<IAppQuery>
         return element.ValueKind switch
         {
             JsonValueKind.String => element.GetString(),
-            JsonValueKind.Number => element.TryGetInt64(out var l) ? l :
-                element.TryGetDouble(out var d) ? d :
-                (object?)null,
+            JsonValueKind.Number when element.TryGetInt64(out var l) => l,
+            JsonValueKind.Number when element.TryGetDouble(out var d) => d,
             JsonValueKind.True => true,
             JsonValueKind.False => false,
             JsonValueKind.Null => null,
-            _ => element.GetRawText() // fallback for arrays/objects
+            _ => throw new JsonException("Unsupported value kind: " + element.ValueKind)
         };
     }
 }

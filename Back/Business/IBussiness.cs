@@ -8,7 +8,7 @@ public interface IBusiness<T, TN, TU> where T : class, IBusEntity where TN : cla
 {
     public Task<T> CreateAsync(TN entity);
 
-    public Task<List<T>> GetWhereAsync(IBusQuery predicate, Pagination pagination);
+    public Task<List<T>> GetWhereAsync(IBusQuery query, Pagination pagination);
 
     public Task<T?> UpdateAsync(TU entity);
 

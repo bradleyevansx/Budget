@@ -1,4 +1,6 @@
 using System.Linq.Expressions;
+using System.Text.Json;
+using static System.Nullable;
 
 namespace Back.Controllers;
 
@@ -18,15 +20,23 @@ public static class DbQueryBuilder
         {
             var member = Expression.Property(parameter, q.PropertyName);
             var memberType = member.Type;
+            Type targetType = null;
+            if (q.Value != null)
+            {
+                targetType = Nullable.GetUnderlyingType(memberType) ?? memberType;
+            }
+            else
+            {
+                targetType = memberType;
+            }
 
-            var targetType = Nullable.GetUnderlyingType(memberType) ?? memberType;
 
             var convertedValue = TryConvertValue(q.Value, targetType);
-            
-            if (convertedValue == null && targetType.IsValueType)
+
+            if (convertedValue == null && targetType.IsValueType && !targetType.IsNullableType())
                 throw new ArgumentException($"Cannot assign null to value type {targetType.Name}");
 
-            var constant = Expression.Constant(convertedValue, targetType);
+            var constant = Expression.Constant(convertedValue, memberType);
 
             return q.Comparator switch
             {
@@ -74,13 +84,31 @@ public static class DbQueryBuilder
                 return value.ToString();
             }
 
+            if (targetType == typeof(DateTime) || targetType == typeof(DateTime?))
+            {
+                if (value == null)
+                    return null;
+
+                if (value is DateTime dt)
+                    return dt;
+
+                if (DateTime.TryParse(value.ToString(), null, System.Globalization.DateTimeStyles.AdjustToUniversal, out var parsedDate))
+                {
+                    return parsedDate;
+                }
+
+                throw new InvalidCastException($"Cannot convert {value} to {targetType}");
+            }
+
             if (targetType.IsNullableType())
             {
                 if (value == null)
                     return null;
 
-                return Convert.ChangeType(value, Nullable.GetUnderlyingType(targetType) ?? targetType);
+                return Convert.ChangeType(value, GetUnderlyingType(targetType) ?? targetType);
             }
+            
+           
 
             return Convert.ChangeType(value, targetType);
         }
@@ -91,8 +119,10 @@ public static class DbQueryBuilder
     }
 
 
+
     private static bool IsNullableType(this Type type)
     {
-        return Nullable.GetUnderlyingType(type) != null;
+        return GetUnderlyingType(type) != null || !type.IsValueType;
     }
+
 }

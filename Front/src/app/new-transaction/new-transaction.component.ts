@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,7 +11,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TransactionService } from '../core/services/transaction.service';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Transaction } from '../core/models/transaction.model';
 
 @Component({
   selector: 'app-new-transaction',
@@ -22,33 +23,43 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
+    CommonModule,
   ],
   templateUrl: './new-transaction.component.html',
   styleUrl: './new-transaction.component.css',
 })
 export class NewTransactionComponent {
+  @Input()
+  allocationId: number;
+
+  @Output()
+  onFinish: EventEmitter<void> = new EventEmitter();
+
   transactionForm: FormGroup;
-  constructor(
-    private fb: FormBuilder,
-    private ts: TransactionService,
-    private router: Router
-  ) {
+
+  initForm() {
     this.transactionForm = this.fb.group({
-      price: ['', Validators.required],
+      price: [0, Validators.required],
       location: ['', Validators.required],
-      date: ['', Validators.required],
+      date: [new Date(), Validators.required],
     });
+  }
+
+  constructor(private fb: FormBuilder, private ts: TransactionService) {
+    this.initForm();
   }
 
   onSubmit() {
     if (this.transactionForm.valid) {
-      const transaction = {
+      const transaction: Omit<Omit<Transaction, 'id'>, 'userId'> = {
         price: this.transactionForm.value.price,
         location: this.transactionForm.value.location,
         date: this.transactionForm.value.date,
+        allocationId: this.allocationId,
       };
       this.ts.create(transaction).subscribe((response) => {
-        this.router.navigate(['/']);
+        this.onFinish.emit();
+        this.initForm();
       });
     }
   }

@@ -49,6 +49,12 @@ export class AppComponent {
         visible: this.isAuthed,
       },
       {
+        label: 'Allocations',
+        icon: PrimeIcons.PENCIL,
+        routerLink: ['/allocations'],
+        visible: this.isAuthed,
+      },
+      {
         label: 'Logout',
         icon: PrimeIcons.SIGN_OUT,
         routerLink: ['/login'],

@@ -3,6 +3,7 @@ import { Transaction } from '../core/models/transaction.model';
 import { TableModule } from 'primeng/table';
 import { toUsdString } from '../core/sdk/moneyHelpers';
 import { TransactionService } from '../core/services/transaction.service';
+import { Comparator, Operator } from '../core/models/query.model';
 @Component({
   selector: 'app-transactions-table',
   imports: [TableModule],
@@ -14,12 +15,23 @@ export class TransactionsTableComponent {
   constructor(private transactionService: TransactionService) {}
 
   ngOnInit() {
-    this.transactionService.getWhere().subscribe((res) => {
-      this.transactions = res.map((x) => ({
-        ...x,
-        date: new Date(x.date),
-      }));
-    });
+    this.transactionService
+      .getWhere({
+        operator: Operator.And,
+        children: [
+          {
+            comparator: Comparator.Equals,
+            propertyName: 'allocationId',
+            value: null,
+          },
+        ],
+      })
+      .subscribe((res) => {
+        this.transactions = res.map((x) => ({
+          ...x,
+          date: new Date(x.date),
+        }));
+      });
   }
   formatDate(date: Date): string {
     return date.toLocaleDateString('en-US');

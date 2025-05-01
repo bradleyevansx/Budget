@@ -1,0 +1,36 @@
+<p-drawer [(visible)]="visible" header="Drawer">
+  <form
+    [formGroup]="newAllocation"
+    (ngSubmit)="handleSubmit()"
+    class="flex flex-col gap-6 p-4 items-center"
+  >
+    <p-float-label>
+      <input
+        formControlName="name"
+        pInputText
+        id="name"
+        pSize="small"
+        type="text"
+        class="w-full"
+      />
+      <label for="name">Name</label>
+    </p-float-label>
+    <p-float-label>
+      <input
+        formControlName="amount"
+        pInputText
+        id="amount"
+        pSize="small"
+        type="number"
+        class="w-full"
+      />
+      <label for="amount">Amount</label>
+    </p-float-label>
+    <app-month-select
+      [value]="date"
+      (onValueChange)="onDateChange($event)"
+    ></app-month-select>
+    <p-button type="submit" label="Save" />
+  </form>
+</p-drawer>
+<p-button (click)="show()" icon="pi pi-plus" label="Create" />

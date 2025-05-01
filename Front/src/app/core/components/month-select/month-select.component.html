@@ -1,0 +1,24 @@
+<div
+  class="flex gap-1 items-center border rounded-md border-gray-200 w-fit p-inputtext p-0!"
+>
+  <button
+    (click)="decreaseMonth()"
+    pButton
+    icon="pi pi-arrow-left"
+    severity="secondary"
+    class="rounded-r-none!"
+    size="small"
+    type="button"
+  ></button>
+  <div class="p-text">{{ getSelectedMonth() }}</div>
+  <div>{{ getSelectedYear() }}</div>
+  <button
+    type="button"
+    (click)="increaseMonth()"
+    pButton
+    class="rounded-l-none!"
+    icon="pi pi-arrow-right"
+    severity="secondary"
+    size="small"
+  ></button>
+</div>
