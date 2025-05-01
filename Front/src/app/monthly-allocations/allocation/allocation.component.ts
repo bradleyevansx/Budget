@@ -11,6 +11,7 @@ import { TransactionService } from '../../core/services/transaction.service';
 import { Comparator, Operator } from '../../core/models/query.model';
 import { DialogModule } from 'primeng/dialog';
 import { NewTransactionComponent } from '../../new-transaction/new-transaction.component';
+import { AllocationsTransactionsTableComponent } from './allocations-transactions-table/allocations-transactions-table.component';
 
 @Component({
   selector: 'app-allocation',
@@ -21,6 +22,7 @@ import { NewTransactionComponent } from '../../new-transaction/new-transaction.c
     CommonModule,
     DialogModule,
     NewTransactionComponent,
+    AllocationsTransactionsTableComponent,
   ],
   templateUrl: './allocation.component.html',
   styleUrl: './allocation.component.css',
@@ -64,7 +66,14 @@ export class AllocationComponent implements OnInit {
         ],
       })
       .subscribe((res) => {
-        this.transactions = res;
+        this.transactions = [
+          ...res.map((transaction) => {
+            return {
+              ...transaction,
+              date: new Date(transaction.date),
+            };
+          }),
+        ];
       });
   }
 

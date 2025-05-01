@@ -1,30 +1,50 @@
-<p-card class="w-full">
-  <div class="flex justify-between">
-    <h3 class="text-3xl font-bold text-gray-800 whitespace-nowrap truncate">
+<p-card>
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-3xl font-bold text-gray-800 truncate">
       {{ allocation.name }}
     </h3>
-    <p-menu #menu [model]="items" [popup]="true" />
-    <p-button
-      (click)="menu.toggle($event)"
-      icon="pi pi-ellipsis-v"
-      severity="secondary"
-      size="small"
-    />
-  </div>
-  <div class="w-full border-t border-t-gray-200 my-2"></div>
-  <p><strong>Allocated:</strong> {{ allocation.amount }}</p>
-  <p><strong>Actual:</strong> {{ totalTransactionsAmount }}</p>
-  <p-button
-    (click)="showDialog()"
-    icon="pi pi-cart-plus"
-    severity="secondary"
-  />
-  <p-dialog [modal]="true" [(visible)]="visible">
-    <div>
-      <app-new-transaction
-        (onFinish)="handleNewTransactionCreated()"
-        [allocationId]="allocation.id"
-      ></app-new-transaction>
+    <div class="flex items-center gap-2">
+      <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      <p-button
+        (click)="menu.toggle($event)"
+        icon="pi pi-ellipsis-v"
+        class="p-button-rounded p-button-text"
+        severity="secondary"
+        size="small"
+      ></p-button>
     </div>
-  </p-dialog>
+  </div>
+
+  <div class="w-full border-t border-gray-200"></div>
+  <!-- <p-dialog [modal]="true" [(visible)]="visible" header="New Transaction">
+    <app-new-transaction
+      (onFinish)="handleNewTransactionCreated()"
+      [allocationId]="allocation.id"
+    ></app-new-transaction>
+  </p-dialog> -->
+
+  <app-allocations-transactions-table
+    [transactions]="transactions"
+    class="mt-4"
+  ></app-allocations-transactions-table>
+  <div class="w-full border-t border-gray-200 mb-4"></div>
+  <!-- <div class="flex justify-center">
+    <p-button
+      (click)="showDialog()"
+      label="Add Transaction"
+      icon="pi pi-cart-plus"
+      class="p-button-rounded"
+      severity="primary"
+    ></p-button>
+  </div> -->
+  <div class="flex flex-col items-center">
+    <div class="flex justify-center gap-4">
+      <p class="text-gray-600">
+        <strong>Allocated:</strong> {{ allocation.amount }}
+      </p>
+      <p class="text-gray-600">
+        <strong>Actual:</strong> {{ totalTransactionsAmount }}
+      </p>
+    </div>
+  </div>
 </p-card>

@@ -1,0 +1,22 @@
+import { Component, Input } from '@angular/core';
+import { Transaction } from '../../../core/models/transaction.model';
+import { TableModule } from 'primeng/table';
+import { toUsdString } from '../../../core/sdk/moneyHelpers';
+
+@Component({
+  selector: 'app-allocations-transactions-table',
+  imports: [TableModule],
+  templateUrl: './allocations-transactions-table.component.html',
+  styleUrl: './allocations-transactions-table.component.css',
+})
+export class AllocationsTransactionsTableComponent {
+  @Input() transactions: Transaction[] = [];
+
+  formatDate(date: Date): string {
+    return date.getDate().toString();
+  }
+
+  formatMoney(money: number): string {
+    return toUsdString(money);
+  }
+}
