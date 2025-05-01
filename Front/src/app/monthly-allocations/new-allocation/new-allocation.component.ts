@@ -47,7 +47,10 @@ export class NewAllocationComponent {
     this.newAllocation = this.fb.group<NewAllocationForm>({
       name: this.fb.control('', Validators.required),
       amount: this.fb.control(0, Validators.required),
-      date: this.fb.control(new Date(), Validators.required),
+      date: this.fb.control(
+        new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        Validators.required
+      ),
     });
   }
 
@@ -62,6 +65,7 @@ export class NewAllocationComponent {
         amount: this.newAllocation.value.amount,
         date: this.newAllocation.value.date,
       };
+      console.log(allocation);
       this.allocationService.create(allocation).subscribe((response) => {
         this.onSubmit.emit(response);
         this.visible = false;

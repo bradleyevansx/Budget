@@ -51,7 +51,10 @@ export class MonthSelectComponent {
   }
 
   getSelectedMonth() {
-    return this.months.find((x) => x.month === this.value.getMonth())?.name;
+    const name = this.months.find(
+      (x) => x.month === this.value.getMonth()
+    )?.name;
+    return name;
   }
 
   getSelectedYear() {

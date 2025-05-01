@@ -37,18 +37,22 @@ export class MonthlyAllocationsComponent {
             comparator: Comparator.GreaterThanOrEqualTo,
             propertyName: 'date',
             value: new Date(
-              this.selectedMonth.getFullYear(),
-              this.selectedMonth.getMonth(),
-              1
+              Date.UTC(
+                this.selectedMonth.getFullYear(),
+                this.selectedMonth.getMonth(),
+                1
+              )
             ),
           },
           {
             comparator: Comparator.LessThanOrEqualTo,
             propertyName: 'date',
             value: new Date(
-              this.selectedMonth.getFullYear(),
-              this.selectedMonth.getMonth() + 1,
-              0
+              Date.UTC(
+                this.selectedMonth.getFullYear(),
+                this.selectedMonth.getMonth() + 1,
+                0
+              )
             ),
           },
         ],
