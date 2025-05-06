@@ -15,7 +15,10 @@
     </div>
   </div>
 
-  <div class="w-full border-t border-gray-200"></div>
+  <div
+    *ngIf="transactions.length > 0"
+    class="w-full border-t border-gray-200"
+  ></div>
   <!-- <p-dialog [modal]="true" [(visible)]="visible" header="New Transaction">
     <app-new-transaction
       (onFinish)="handleNewTransactionCreated()"
@@ -24,10 +27,11 @@
   </p-dialog> -->
 
   <app-allocations-transactions-table
+    *ngIf="transactions.length > 0"
     [transactions]="transactions"
     class="mt-4"
   ></app-allocations-transactions-table>
-  <div class="w-full border-t border-gray-200 mb-4"></div>
+  <div class="w-full border-t border-gray-200 mb-4 mt-2"></div>
   <!-- <div class="flex justify-center">
     <p-button
       (click)="showDialog()"
@@ -40,10 +44,10 @@
   <div class="flex flex-col items-center">
     <div class="flex justify-center gap-4">
       <p class="text-gray-600">
-        <strong>Allocated:</strong> {{ allocation.amount }}
+        <strong>Allocated:</strong> {{ formatMoney(allocation.amount) }}
       </p>
       <p class="text-gray-600">
-        <strong>Actual:</strong> {{ totalTransactionsAmount }}
+        <strong>Actual:</strong> {{ formatMoney(totalTransactionsAmount) }}
       </p>
     </div>
   </div>

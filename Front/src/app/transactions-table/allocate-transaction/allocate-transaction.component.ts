@@ -15,22 +15,30 @@ import { ButtonModule } from 'primeng/button';
 })
 export class AllocateTransactionComponent {
   @Input() transaction: Transaction;
-  @Input() allocations: Allocation;
-  @Output() onAllocate: EventEmitter<void> = new EventEmitter();
+  @Input() allocations: Allocation[];
+  @Output() onChange: EventEmitter<{
+    action: 'allocate' | 'deallocate';
+    allocationId: number;
+    transaction: Transaction;
+  }> = new EventEmitter();
 
-  selectedAllocation: Allocation;
+  private _selectedAllocation: Allocation;
+
+  get selectedAllocation(): Allocation {
+    return this._selectedAllocation;
+  }
+
+  set selectedAllocation(value: Allocation) {
+    this.onChange.emit({
+      action: value ? 'allocate' : 'deallocate',
+      allocationId: value?.id ?? this._selectedAllocation.id,
+      transaction: this.transaction,
+    });
+    this._selectedAllocation = value;
+  }
 
   constructor(private transcationService: TransactionService) {
     this.transaction = {} as Transaction;
-    this.allocations = {} as Allocation;
-  }
-
-  allocateTransaction() {
-    if (this.selectedAllocation) {
-      this.transaction.allocationId = this.selectedAllocation.id;
-      this.transcationService.update(this.transaction).subscribe((res) => {
-        this.onAllocate.emit();
-      });
-    }
+    this.allocations = [] as Allocation[];
   }
 }

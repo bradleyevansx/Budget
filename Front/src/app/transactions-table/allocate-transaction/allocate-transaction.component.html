@@ -3,12 +3,6 @@
   [(ngModel)]="selectedAllocation"
   optionLabel="name"
   placeholder="Allocate Transaction"
-  class="w-full md:w-56"
+  class="w-full md:w-56 mr-2"
+  [showClear]="true"
 />
-<p-button
-  label="Allocate"
-  icon="pi pi-check"
-  (click)="allocateTransaction()"
-  [disabled]="!selectedAllocation"
-  class="ml-2"
-></p-button>

@@ -8,9 +8,10 @@ import { SelectedMonthService } from '../core/services/selectedMonth.service';
 import { AllocationService } from '../core/services/allocation.service';
 import { Allocation } from '../core/models/allocation.model';
 import { AllocateTransactionComponent } from './allocate-transaction/allocate-transaction.component';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-transactions-table',
-  imports: [TableModule, AllocateTransactionComponent],
+  imports: [TableModule, AllocateTransactionComponent, ButtonModule],
   templateUrl: './transactions-table.component.html',
   styleUrl: './transactions-table.component.css',
 })
@@ -18,6 +19,7 @@ export class TransactionsTableComponent {
   transactions: Transaction[] = [];
   allocations: Allocation[] = [];
   selectedMonth: Date = new Date();
+  toBeAllocated: Map<number, Transaction[]> = new Map();
   constructor(
     private transactionService: TransactionService,
     private selectedMonthService: SelectedMonthService,
@@ -112,15 +114,44 @@ export class TransactionsTableComponent {
   }
 
   formatDate(date: Date): string {
-    return date.toLocaleDateString('en-US');
+    return date.getDate().toString().padStart(2, '0');
   }
 
   formatMoney(money: number): string {
     return toUsdString(money);
   }
 
+  setAllocation(event: {
+    allocationId: number;
+    transaction: Transaction;
+    action: 'allocate' | 'deallocate';
+  }) {
+    if (event.action === 'allocate') {
+      const curr = this.toBeAllocated.get(event.allocationId) || [];
+      this.toBeAllocated.set(event.allocationId, [...curr, event.transaction]);
+    } else if (event.action === 'deallocate') {
+      const curr = this.toBeAllocated.get(event.allocationId) || [];
+      this.toBeAllocated.set(
+        event.allocationId,
+        curr.filter((t) => t.id !== event.transaction.id)
+      );
+    }
+  }
+
   handleAllocate() {
-    this.initTransactions();
-    this.initAllocations();
+    this.toBeAllocated.forEach((transactions, allocationId) => {
+      transactions.forEach((transaction) => {
+        this.transactionService
+          .update({ ...transaction, allocationId })
+          .subscribe(() => {
+            this.initTransactions();
+          });
+      });
+    });
+    this.toBeAllocated.clear();
+  }
+
+  get hasAllocations(): boolean {
+    return this.toBeAllocated.size > 0;
   }
 }

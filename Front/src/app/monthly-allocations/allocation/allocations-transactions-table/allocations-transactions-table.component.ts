@@ -13,7 +13,7 @@ export class AllocationsTransactionsTableComponent {
   @Input() transactions: Transaction[] = [];
 
   formatDate(date: Date): string {
-    return date.getDate().toString();
+    return date.getDate().toString().padStart(2, '0');
   }
 
   formatMoney(money: number): string {

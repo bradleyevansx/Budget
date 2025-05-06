@@ -12,6 +12,7 @@ import { Comparator, Operator } from '../../core/models/query.model';
 import { DialogModule } from 'primeng/dialog';
 import { NewTransactionComponent } from '../../new-transaction/new-transaction.component';
 import { AllocationsTransactionsTableComponent } from './allocations-transactions-table/allocations-transactions-table.component';
+import { toUsdString } from '../../core/sdk/moneyHelpers';
 
 @Component({
   selector: 'app-allocation',
@@ -21,7 +22,6 @@ import { AllocationsTransactionsTableComponent } from './allocations-transaction
     MenuModule,
     CommonModule,
     DialogModule,
-    NewTransactionComponent,
     AllocationsTransactionsTableComponent,
   ],
   templateUrl: './allocation.component.html',
@@ -94,5 +94,9 @@ export class AllocationComponent implements OnInit {
   handleNewTransactionCreated() {
     this.hideDialog();
     this.initTransactions();
+  }
+
+  formatMoney(value: number) {
+    return toUsdString(value);
   }
 }
