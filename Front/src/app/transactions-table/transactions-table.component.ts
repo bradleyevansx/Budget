@@ -9,6 +9,8 @@ import { AllocationService } from '../core/services/allocation.service';
 import { Allocation } from '../core/models/allocation.model';
 import { AllocateTransactionComponent } from './allocate-transaction/allocate-transaction.component';
 import { ButtonModule } from 'primeng/button';
+import { UserService } from '../core/services/user.service';
+import { User } from '../core/models/user.model';
 @Component({
   selector: 'app-transactions-table',
   imports: [TableModule, AllocateTransactionComponent, ButtonModule],
@@ -18,12 +20,14 @@ import { ButtonModule } from 'primeng/button';
 export class TransactionsTableComponent {
   transactions: Transaction[] = [];
   allocations: Allocation[] = [];
+  users: User[] = [];
   selectedMonth: Date = new Date();
   toBeAllocated: Map<number, Transaction[]> = new Map();
   constructor(
     private transactionService: TransactionService,
     private selectedMonthService: SelectedMonthService,
-    private allocationService: AllocationService
+    private allocationService: AllocationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -31,6 +35,15 @@ export class TransactionsTableComponent {
       this.selectedMonth = month;
       this.initTransactions();
       this.initAllocations();
+      this.initUsers();
+    });
+  }
+
+  initUsers() {
+    this.userService.getWhere().subscribe((res) => {
+      this.users = res.map((x) => ({
+        ...x,
+      }));
     });
   }
 
@@ -153,5 +166,10 @@ export class TransactionsTableComponent {
 
   get hasAllocations(): boolean {
     return this.toBeAllocated.size > 0;
+  }
+
+  getUser(transaction: Transaction): string {
+    const user = this.users.find((user) => user.id === transaction.userId);
+    return user ? `${user.firstName} ${user.lastName}` : '';
   }
 }

@@ -13,6 +13,11 @@ public class DbUser : IEntity<BusUser>
 
     public BusUser ToBus()
     {
-        return null;
+        var res = new BusUser();
+        res.Id = Id;
+        res.FirstName = FirstName;
+        res.LastName = LastName;
+        res.PasswordHash = PasswordHash;
+        return res;
     }
 }

@@ -1,6 +1,7 @@
 using System.Text;
 using Back.Business.Allocations;
 using Back.Business.Transactions;
+using Back.Business.Users;
 using Back.Data;
 using Back.Repositories.Allocations;
 using Back.Repositories.Transactions;
@@ -21,6 +22,8 @@ builder.Services.AddScoped<TransactionRepository>();
 builder.Services.AddScoped<AllocationBus>();
 builder.Services.AddScoped<AllocationRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserBus>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
