@@ -35,6 +35,8 @@ export class NewTransactionComponent {
   @Output()
   onFinish: EventEmitter<void> = new EventEmitter();
 
+  isLoading: boolean = false;
+
   transactionForm: FormGroup;
 
   initForm() {
@@ -58,6 +60,7 @@ export class NewTransactionComponent {
         allocationId: this.allocationId,
       };
       this.ts.create(transaction).subscribe((response) => {
+        this.isLoading = response.loading;
         this.onFinish.emit();
         this.initForm();
       });

@@ -1,40 +1,56 @@
+// allocation.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { QueryLayer } from '../models/query.model';
 import { Allocation } from '../models/allocation.model';
-import { finalize } from 'rxjs/operators';
+import {
+  LoadingState,
+  switchMapWithLoading,
+} from '../sdk/switchMapWithLoading';
 
 @Injectable({ providedIn: 'root' })
 export class AllocationService {
-  isLoading = new BehaviorSubject<boolean>(false);
-
   constructor(private http: HttpClient) {}
 
-  private setLoading<T>(obs$: Observable<T>): Observable<T> {
-    this.isLoading.next(true);
-    return obs$.pipe(finalize(() => this.isLoading.next(false)));
-  }
-
-  getWhere(query?: QueryLayer<Allocation>): Observable<Allocation[]> {
-    return this.setLoading(
-      this.http.post<Allocation[]>('/api/allocation/get', { query })
+  getWhere(
+    query?: QueryLayer<Allocation>
+  ): Observable<LoadingState<Allocation[]>> {
+    return of(query).pipe(
+      switchMapWithLoading((q) =>
+        this.http.post<Allocation[]>('/api/allocation/get', { query: q })
+      )
     );
   }
 
-  create(t: Omit<Omit<Allocation, 'id'>, 'userId'>): Observable<Allocation> {
-    return this.setLoading(this.http.post<Allocation>('/api/allocation', t));
-  }
-
-  delete(id: number): Observable<Allocation> {
-    return this.setLoading(
-      this.http.delete<Allocation>(`/api/allocation/${id}`)
+  create(
+    t: Omit<Omit<Allocation, 'id'>, 'userId'>
+  ): Observable<LoadingState<Allocation>> {
+    return of(t).pipe(
+      switchMapWithLoading((data) =>
+        this.http.post<Allocation>('/api/allocation', data)
+      )
     );
   }
 
-  update(t: Allocation): Observable<Partial<Allocation> & { id: number }> {
-    return this.setLoading(
-      this.http.put<Partial<Allocation> & { id: number }>(`/api/allocation`, t)
+  delete(id: number): Observable<LoadingState<Allocation>> {
+    return of(id).pipe(
+      switchMapWithLoading((allocationId) =>
+        this.http.delete<Allocation>(`/api/allocation/${allocationId}`)
+      )
+    );
+  }
+
+  update(
+    t: Allocation
+  ): Observable<LoadingState<Partial<Allocation> & { id: number }>> {
+    return of(t).pipe(
+      switchMapWithLoading((data) =>
+        this.http.put<Partial<Allocation> & { id: number }>(
+          `/api/allocation`,
+          data
+        )
+      )
     );
   }
 }

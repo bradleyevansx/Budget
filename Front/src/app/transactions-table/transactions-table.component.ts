@@ -41,7 +41,7 @@ export class TransactionsTableComponent {
 
   initUsers() {
     this.userService.getWhere().subscribe((res) => {
-      this.users = res.map((x) => ({
+      this.users = res.data.map((x) => ({
         ...x,
       }));
     });
@@ -77,7 +77,7 @@ export class TransactionsTableComponent {
         ],
       })
       .subscribe((res) => {
-        this.allocations = res.map((x) => ({
+        this.allocations = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),
         }));
@@ -119,7 +119,7 @@ export class TransactionsTableComponent {
         ],
       })
       .subscribe((res) => {
-        this.transactions = res.map((x) => ({
+        this.transactions = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),
         }));

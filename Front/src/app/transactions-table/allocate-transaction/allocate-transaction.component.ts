@@ -37,7 +37,7 @@ export class AllocateTransactionComponent {
     this._selectedAllocation = value;
   }
 
-  constructor(private transcationService: TransactionService) {
+  constructor() {
     this.transaction = {} as Transaction;
     this.allocations = [] as Allocation[];
   }

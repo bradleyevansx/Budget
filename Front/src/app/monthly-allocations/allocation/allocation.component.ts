@@ -67,7 +67,7 @@ export class AllocationComponent implements OnInit {
       })
       .subscribe((res) => {
         this.transactions = [
-          ...res.map((transaction) => {
+          ...res.data.map((transaction) => {
             return {
               ...transaction,
               date: new Date(transaction.date),

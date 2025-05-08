@@ -15,7 +15,7 @@ export class TransactionsGraphsComponent {
 
   ngOnInit() {
     this.transactionService.getWhere().subscribe((res) => {
-      this.transactions = res.map((x) => ({
+      this.transactions = res.data.map((x) => ({
         ...x,
         date: new Date(x.date),
       }));

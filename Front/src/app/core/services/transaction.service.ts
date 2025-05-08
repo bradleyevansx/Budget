@@ -1,42 +1,55 @@
+// transaction.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, finalize, Observable, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Transaction } from '../models/transaction.model';
 import { QueryLayer } from '../models/query.model';
+import {
+  LoadingState,
+  switchMapWithLoading,
+} from '../sdk/switchMapWithLoading';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  isLoading = new BehaviorSubject<boolean>(false);
-
   constructor(private http: HttpClient) {}
 
-  private setLoading<T>(obs$: Observable<T>): Observable<T> {
-    this.isLoading.next(true);
-    return obs$.pipe(finalize(() => this.isLoading.next(false)));
-  }
-  getWhere(query?: QueryLayer<Transaction>): Observable<Transaction[]> {
-    return this.setLoading(
-      this.http.post<Transaction[]>('/api/transaction/get', {
-        query,
-      })
+  getWhere(
+    query?: QueryLayer<Transaction>
+  ): Observable<LoadingState<Transaction[]>> {
+    return of(query).pipe(
+      switchMapWithLoading((q) =>
+        this.http.post<Transaction[]>('/api/transaction/get', { query: q })
+      )
     );
   }
 
-  create(t: Omit<Omit<Transaction, 'id'>, 'userId'>): Observable<Transaction> {
-    return this.setLoading(this.http.post<Transaction>('/api/transaction', t));
-  }
-
-  delete(id: number): Observable<Transaction> {
-    return this.setLoading(
-      this.http.delete<Transaction>(`/api/transaction/${id}`)
+  create(
+    t: Omit<Omit<Transaction, 'id'>, 'userId'>
+  ): Observable<LoadingState<Transaction>> {
+    return of(t).pipe(
+      switchMapWithLoading((data) =>
+        this.http.post<Transaction>('/api/transaction', data)
+      )
     );
   }
 
-  update(t: Transaction): Observable<Partial<Transaction> & { id: number }> {
-    return this.setLoading(
-      this.http.patch<Partial<Transaction> & { id: number }>(
-        `/api/transaction`,
-        t
+  delete(id: number): Observable<LoadingState<Transaction>> {
+    return of(id).pipe(
+      switchMapWithLoading((transactionId) =>
+        this.http.delete<Transaction>(`/api/transaction/${transactionId}`)
+      )
+    );
+  }
+
+  update(
+    t: Transaction
+  ): Observable<LoadingState<Partial<Transaction> & { id: number }>> {
+    return of(t).pipe(
+      switchMapWithLoading((data) =>
+        this.http.patch<Partial<Transaction> & { id: number }>(
+          `/api/transaction`,
+          data
+        )
       )
     );
   }

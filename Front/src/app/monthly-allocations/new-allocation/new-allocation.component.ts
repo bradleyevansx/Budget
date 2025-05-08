@@ -83,7 +83,7 @@ export class NewAllocationComponent implements OnInit {
       };
       console.log(allocation);
       this.allocationService.create(allocation).subscribe((response) => {
-        this.onSubmit.emit(response);
+        this.onSubmit.emit(response.data);
         this.visible = false;
       });
     }

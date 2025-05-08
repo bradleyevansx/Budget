@@ -69,7 +69,7 @@ export class MonthlyAllocationsComponent implements OnInit {
         ],
       })
       .subscribe((res) => {
-        this.allocations = res.map((x) => ({
+        this.allocations = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),
         }));

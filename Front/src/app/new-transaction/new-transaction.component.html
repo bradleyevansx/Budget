@@ -6,6 +6,7 @@
   <span>
     <label for="price">Price</label>
     <input
+      [disabled]="isLoading"
       formControlName="price"
       pInputText
       id="price"
@@ -16,6 +17,7 @@
   <span>
     <label for="location">Location</label>
     <input
+      [disabled]="isLoading"
       formControlName="location"
       pInputText
       id="location"
@@ -26,11 +28,19 @@
   <span class="flex flex-col gap-1 relative">
     <label for="date">Date</label>
     <p-date-picker
+      [disabled]="isLoading"
       formControlName="date"
       id="date"
       class="w-fit z-10"
       appendTo="body"
     />
   </span>
-  <p-button class="w-full" type="submit"> Submit </p-button>
+  <p-button
+    [loading]="isLoading"
+    class="w-full"
+    type="submit"
+    [disabled]="isLoading"
+  >
+    Submit
+  </p-button>
 </form>
