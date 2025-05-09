@@ -23,6 +23,11 @@ export class TransactionsTableComponent {
   users: User[] = [];
   selectedMonth: Date = new Date();
   toBeAllocated: Map<number, Transaction[]> = new Map();
+
+  usersLoading: boolean = true;
+  transactionsLoading: boolean = true;
+  allocationsLoading: boolean = true;
+
   constructor(
     private transactionService: TransactionService,
     private selectedMonthService: SelectedMonthService,
@@ -41,6 +46,8 @@ export class TransactionsTableComponent {
 
   initUsers() {
     this.userService.getWhere().subscribe((res) => {
+      this.usersLoading = res.loading;
+      if (res.loading) return;
       this.users = res.data.map((x) => ({
         ...x,
       }));
@@ -77,6 +84,8 @@ export class TransactionsTableComponent {
         ],
       })
       .subscribe((res) => {
+        this.allocationsLoading = res.loading;
+        if (res.loading) return;
         this.allocations = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),
@@ -119,6 +128,8 @@ export class TransactionsTableComponent {
         ],
       })
       .subscribe((res) => {
+        this.transactionsLoading = res.loading;
+        if (res.loading) return;
         this.transactions = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),
@@ -152,15 +163,24 @@ export class TransactionsTableComponent {
   }
 
   handleAllocate() {
+    const allocations: Transaction[] = [];
+
     this.toBeAllocated.forEach((transactions, allocationId) => {
       transactions.forEach((transaction) => {
-        this.transactionService
-          .update({ ...transaction, allocationId })
-          .subscribe(() => {
-            this.initTransactions();
-          });
+        allocations.push({
+          ...transaction,
+          allocationId: allocationId,
+        });
       });
     });
+
+    this.allocationsLoading = true;
+    this.transactionService.updateMany(allocations).subscribe(async (res) => {
+      this.allocationsLoading = res.loading;
+      if (res.loading) return;
+      this.initTransactions();
+    });
+
     this.toBeAllocated.clear();
   }
 
@@ -171,5 +191,15 @@ export class TransactionsTableComponent {
   getUser(transaction: Transaction): string {
     const user = this.users.find((user) => user.id === transaction.userId);
     return user ? `${user.firstName} ${user.lastName}` : '';
+  }
+
+  get isLoading(): boolean {
+    return (
+      this.usersLoading || this.transactionsLoading || this.allocationsLoading
+    );
+  }
+
+  get allocateButtonDisabled(): boolean {
+    return this.isLoading || !this.hasAllocations;
   }
 }

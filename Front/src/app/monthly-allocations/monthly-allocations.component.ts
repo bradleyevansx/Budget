@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AllocationComponent } from './allocation/allocation.component';
 import { Comparator, Operator } from '../core/models/query.model';
 import { SelectedMonthService } from '../core/services/selectedMonth.service';
+import { StatsComponent } from '../stats/stats.component';
 
 @Component({
   selector: 'app-monthly-allocations',
@@ -17,6 +18,7 @@ import { SelectedMonthService } from '../core/services/selectedMonth.service';
     CardModule,
     CommonModule,
     AllocationComponent,
+    StatsComponent,
   ],
   templateUrl: './monthly-allocations.component.html',
   styleUrl: './monthly-allocations.component.css',
@@ -24,7 +26,7 @@ import { SelectedMonthService } from '../core/services/selectedMonth.service';
 export class MonthlyAllocationsComponent implements OnInit {
   selectedMonth: Date = new Date();
   allocations: Allocation[] = [];
-  loading: boolean = false;
+  loading: boolean = true;
 
   constructor(
     private allocationService: AllocationService,
@@ -69,6 +71,8 @@ export class MonthlyAllocationsComponent implements OnInit {
         ],
       })
       .subscribe((res) => {
+        this.loading = res.loading;
+        if (res.loading) return;
         this.allocations = res.data.map((x) => ({
           ...x,
           date: new Date(x.date),

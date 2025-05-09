@@ -39,24 +39,15 @@ export class NewAllocationComponent implements OnInit {
 
   visible: boolean = false;
   newAllocation: FormGroup<NewAllocationForm>;
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private allocationService: AllocationService,
     private selectedMonthService: SelectedMonthService
-  ) {
-    this.newAllocation = this.fb.group<NewAllocationForm>({
-      name: this.fb.control('', Validators.required),
-      amount: this.fb.control(0, Validators.required),
-      date: this.fb.control(
-        new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        Validators.required
-      ),
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    // Subscribe to the selectedMonth$ observable to update the form's date field
     this.selectedMonthService.selectedMonth$.subscribe(
       (selectedMonth: Date) => {
         this.newAllocation.patchValue({
@@ -68,6 +59,18 @@ export class NewAllocationComponent implements OnInit {
         });
       }
     );
+    this.initForm();
+  }
+
+  initForm() {
+    this.newAllocation = this.fb.group<NewAllocationForm>({
+      name: this.fb.control('', Validators.required),
+      amount: this.fb.control(0, Validators.required),
+      date: this.fb.control(
+        this.selectedMonthService.getSelectedMonth(),
+        Validators.required
+      ),
+    });
   }
 
   show() {
@@ -81,9 +84,11 @@ export class NewAllocationComponent implements OnInit {
         amount: this.newAllocation.value.amount,
         date: this.newAllocation.value.date,
       };
-      console.log(allocation);
+      this.loading = true;
       this.allocationService.create(allocation).subscribe((response) => {
+        this.loading = response.loading;
         this.onSubmit.emit(response.data);
+        this.initForm();
         this.visible = false;
       });
     }

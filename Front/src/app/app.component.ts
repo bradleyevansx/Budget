@@ -13,7 +13,7 @@ import { MonthSelectComponent } from './core/components/month-select/month-selec
 })
 export class AppComponent {
   constructor(private authService: AuthService) {
-    authService.onStatusChangeHandlers.push((status) => {
+    authService.status$.subscribe((status) => {
       this.isAuthed = status === 'authenticated';
       this.initItems();
     });

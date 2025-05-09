@@ -1,7 +1,7 @@
 // transaction.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { Transaction } from '../models/transaction.model';
 import { QueryLayer } from '../models/query.model';
 import {
@@ -49,6 +49,26 @@ export class TransactionService {
         this.http.patch<Partial<Transaction> & { id: number }>(
           `/api/transaction`,
           data
+        )
+      )
+    );
+  }
+  updateMany(
+    transactions: Transaction[]
+  ): Observable<LoadingState<(Partial<Transaction> & { id: number })[]>> {
+    return of(transactions).pipe(
+      switchMapWithLoading((data) =>
+        from(
+          Promise.all(
+            data.map((transaction) =>
+              this.http
+                .patch<Partial<Transaction> & { id: number }>(
+                  `/api/transaction`,
+                  transaction
+                )
+                .toPromise()
+            )
+          )
         )
       )
     );

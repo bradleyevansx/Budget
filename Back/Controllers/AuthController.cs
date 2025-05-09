@@ -3,6 +3,7 @@ using Back.Data;
 using Back.Models;
 using Back.Repositories.Users;
 using Back.SDK;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -61,5 +62,10 @@ public class AuthController: ControllerBase
         return Ok(new { token });
     }
 
-   
+    [Authorize]
+    [HttpGet("try-auth")]
+    public async Task<IActionResult> TryAuth()
+    {
+        return Ok();
+    }
 }

@@ -1,18 +1,41 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 type AuthStatus = 'authenticated' | 'unauthenticated';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  private statusSubject: BehaviorSubject<AuthStatus> =
+    new BehaviorSubject<AuthStatus>('unauthenticated');
+  status$ = this.statusSubject.asObservable();
 
-  onStatusChangeHandlers: ((s: AuthStatus) => void)[] = [];
+  constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
     return typeof window !== 'undefined' && this.getToken() !== null;
+  }
+
+  isAuthed(): Observable<boolean> {
+    return this.http
+      .get<{ token: string }>('/api/auth/try-auth', { observe: 'response' })
+      .pipe(
+        map((res) => {
+          if (res.status === 200) {
+            this.statusSubject.next('authenticated');
+            return true;
+          } else {
+            this.statusSubject.next('unauthenticated');
+            return false;
+          }
+        }),
+        catchError(() => {
+          this.statusSubject.next('unauthenticated');
+          return of(false);
+        })
+      );
   }
 
   getToken(): string | null {
@@ -24,14 +47,11 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('auth_token');
-    this.onStatusChangeHandlers.forEach((handler) => {
-      handler('unauthenticated');
-    });
+    this.statusSubject.next('unauthenticated');
   }
 
   login(firstLastName: string, password: string) {
-    const firstName = firstLastName.split(' ')[0];
-    const lastName = firstLastName.split(' ')[1];
+    const [firstName, lastName] = firstLastName.split(' ');
     return this.http
       .post<{ token: string }>('/api/auth/login', {
         firstName,
@@ -41,9 +61,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           localStorage.setItem('auth_token', response.token);
-          this.onStatusChangeHandlers.forEach((handler) => {
-            handler('authenticated');
-          });
+          this.statusSubject.next('authenticated');
           this.router.navigate(['/']);
         })
       );

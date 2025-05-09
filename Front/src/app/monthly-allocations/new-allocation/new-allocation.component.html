@@ -12,6 +12,7 @@
         pSize="small"
         type="text"
         class="w-full"
+        [disabled]="loading"
       />
       <label for="name">Name</label>
     </p-float-label>
@@ -23,10 +24,16 @@
         pSize="small"
         type="number"
         class="w-full"
+        [disabled]="loading"
       />
       <label for="amount">Amount</label>
     </p-float-label>
-    <p-button type="submit" label="Save" />
+    <p-button
+      [loading]="loading"
+      [disabled]="loading"
+      type="submit"
+      label="Save"
+    />
   </form>
 </p-drawer>
 <p-button (click)="show()" icon="pi pi-plus" label="Create" />

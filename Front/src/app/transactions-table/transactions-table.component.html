@@ -1,5 +1,6 @@
 <div class="h-full pt-4">
   <p-table
+    [loading]="isLoading"
     [value]="transactions"
     [rows]="25"
     [paginator]="true"
@@ -34,7 +35,7 @@
 
     <ng-template #paginatorright>
       <button
-        [disabled]="!hasAllocations"
+        [disabled]="allocateButtonDisabled"
         (click)="handleAllocate()"
         type="button"
         pButton
