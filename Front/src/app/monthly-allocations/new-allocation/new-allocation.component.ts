@@ -39,6 +39,7 @@ export class NewAllocationComponent implements OnInit {
 
   visible: boolean = false;
   newAllocation: FormGroup<NewAllocationForm>;
+
   loading: boolean = false;
 
   constructor(
@@ -48,6 +49,8 @@ export class NewAllocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
+
     this.selectedMonthService.selectedMonth$.subscribe(
       (selectedMonth: Date) => {
         this.newAllocation.patchValue({
@@ -59,7 +62,6 @@ export class NewAllocationComponent implements OnInit {
         });
       }
     );
-    this.initForm();
   }
 
   initForm() {

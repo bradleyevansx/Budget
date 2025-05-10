@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Transaction } from '../../../core/models/transaction.model';
 import { TableModule } from 'primeng/table';
-import { toUsdString } from '../../../core/sdk/moneyHelpers';
+import { Transaction } from '../../../../../core/models/transaction.model';
+import { toUsdString } from '../../../../../core/sdk/moneyHelpers';
 
 @Component({
   selector: 'app-allocations-transactions-table',
