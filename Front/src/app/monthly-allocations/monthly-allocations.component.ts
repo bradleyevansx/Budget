@@ -9,6 +9,7 @@ import { SelectedMonthService } from '../core/services/selectedMonth.service';
 import { StatsComponent } from './stats/stats.component';
 import { MonthlyService } from '../core/services/monthly.service';
 import { AllocationsComponent } from './allocations/allocations.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 @Component({
   selector: 'app-monthly-allocations',
@@ -18,6 +19,7 @@ import { AllocationsComponent } from './allocations/allocations.component';
     CommonModule,
     StatsComponent,
     AllocationsComponent,
+    TransactionsComponent,
   ],
   templateUrl: './monthly-allocations.component.html',
   styleUrl: './monthly-allocations.component.css',

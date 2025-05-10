@@ -51,7 +51,6 @@ export class StatsComponent {
       )
     );
 
-    // Initialize weeks array
     let currentWeekStart = new Date(startDate);
     while (currentWeekStart <= endDate) {
       weeks.push(0);
@@ -60,7 +59,6 @@ export class StatsComponent {
       );
     }
 
-    // Calculate spending per week
     this.transactions.forEach((transaction) => {
       const transactionDate = new Date(transaction.date);
       if (transactionDate >= startDate && transactionDate <= endDate) {

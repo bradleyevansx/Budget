@@ -1,0 +1,33 @@
+<div class="h-full pt-4">
+  <p-table
+    [value]="transactionsJoin"
+    [rows]="25"
+    [paginator]="true"
+    scrollHeight="50dvh"
+    [scrollable]="true"
+  >
+    <ng-template #header>
+      <tr>
+        <th class="w-14">Date</th>
+        <th>Location</th>
+        <th>User</th>
+        <th>Allocation</th>
+        <th class="w-14">Price</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-transaction>
+      <tr>
+        <td>{{ formatDate(transaction.date) }}</td>
+        <td>{{ transaction.location }}</td>
+
+        <td class="whitespace-nowrap">
+          {{ transaction.user.firstName + " " + transaction.user.lastName }}
+        </td>
+        <td>
+          {{ transaction.allocation.name }}
+        </td>
+        <td>{{ formatMoney(transaction.price) }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

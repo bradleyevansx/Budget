@@ -9,25 +9,37 @@ import { AllocationService } from './allocation.service';
 import { TransactionService } from './transaction.service';
 import { SelectedMonthService } from './selectedMonth.service';
 import { Comparator, Operator } from '../models/query.model';
+import { User } from '../models/user.model';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class MonthlyService {
   private allocationsSubject = new BehaviorSubject<Allocation[]>([]);
   private transactionsSubject = new BehaviorSubject<Transaction[]>([]);
+  private usersSubject = new BehaviorSubject<User[]>([]);
   selectedMonth: Date = new Date();
 
   allocations$ = this.allocationsSubject.asObservable();
   transactions$ = this.transactionsSubject.asObservable();
+  users$ = this.usersSubject.asObservable();
 
   constructor(
     private as: AllocationService,
     private ts: TransactionService,
-    private sms: SelectedMonthService
+    private sms: SelectedMonthService,
+    private us: UserService
   ) {
     this.init();
   }
 
   init() {
+    this.us.getWhere().subscribe((res) => {
+      if (res.loading) return;
+      const users = res.data.map((x) => ({
+        ...x,
+      }));
+      this.usersSubject.next(users);
+    });
     this.sms.selectedMonth$.subscribe((month) => {
       this.selectedMonth = month;
       this.initAllocations();
