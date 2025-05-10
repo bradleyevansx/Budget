@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
-import { DrawerModule } from 'primeng/drawer';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,13 +15,13 @@ import { NewAllocationForm } from './NewAllocationForm';
 import { CommonModule } from '@angular/common';
 import { AllocationService } from '../../../core/services/allocation.service';
 import { SelectedMonthService } from '../../../core/services/selectedMonth.service';
-import { Allocation } from '../../../core/models/allocation.model';
 import { MonthlyService } from '../../../core/services/monthly.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-new-allocation',
   imports: [
-    DrawerModule,
+    DialogModule,
     FloatLabelModule,
     ButtonModule,
     DatePickerModule,

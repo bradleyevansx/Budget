@@ -110,16 +110,16 @@ export class AllocationRowComponent {
   };
 
   tMap = {
-    blue: 'text-blue-500',
-    green: 'text-green-500',
-    red: 'text-red-500',
-    yellow: 'text-yellow-500',
-    purple: 'text-purple-500',
-    pink: 'text-pink-500',
-    teal: 'text-teal-500',
-    orange: 'text-orange-500',
-    indigo: 'text-indigo-500',
-    lime: 'text-lime-500',
+    blue: 'text-blue-500 bg-blue-100',
+    green: 'text-green-500 bg-green-100',
+    red: 'text-red-500 bg-red-100',
+    yellow: 'text-yellow-500 bg-yellow-100',
+    purple: 'text-purple-500 bg-purple-100',
+    pink: 'text-pink-500 bg-pink-100',
+    teal: 'text-teal-500 bg-teal-100',
+    orange: 'text-orange-500 bg-orange-100',
+    indigo: 'text-indigo-500 bg-indigo-100',
+    lime: 'text-lime-500 bg-lime-100',
   };
 
   get bgColor(): string {

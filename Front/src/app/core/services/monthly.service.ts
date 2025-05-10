@@ -96,6 +96,7 @@ export class MonthlyService {
           date: new Date(x.date),
         }))
       );
+      transactions.sort((a, b) => a.date.getTime() - b.date.getTime());
       this.transactionsSubject.next(transactions);
     });
   }

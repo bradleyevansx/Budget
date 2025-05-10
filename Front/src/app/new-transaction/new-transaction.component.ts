@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +19,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { TransactionService } from '../core/services/transaction.service';
 import { CommonModule } from '@angular/common';
 import { Transaction } from '../core/models/transaction.model';
+import { MonthlyService } from '../core/services/monthly.service';
 
 @Component({
   selector: 'app-new-transaction',
@@ -31,6 +38,8 @@ import { Transaction } from '../core/models/transaction.model';
 export class NewTransactionComponent {
   @Input()
   allocationId: number;
+  @Input()
+  transaction: Transaction;
 
   @Output()
   onFinish: EventEmitter<void> = new EventEmitter();
@@ -41,29 +50,51 @@ export class NewTransactionComponent {
 
   initForm() {
     this.transactionForm = this.fb.group({
-      price: [0, Validators.required],
-      location: ['', Validators.required],
-      date: [new Date(), Validators.required],
+      price: [this.transaction?.price || 0, Validators.required],
+      location: [this.transaction?.location || '', Validators.required],
+      date: [this.transaction?.date || new Date(), Validators.required],
     });
   }
 
-  constructor(private fb: FormBuilder, private ts: TransactionService) {
+  constructor(
+    private fb: FormBuilder,
+    private ts: TransactionService,
+    private ms: MonthlyService
+  ) {
     this.initForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['transaction'] && changes['transaction'].currentValue) {
+      this.initForm();
+    }
   }
 
   onSubmit() {
     if (this.transactionForm.valid) {
-      const transaction: Omit<Omit<Transaction, 'id'>, 'userId'> = {
+      const transactionData: Omit<Transaction, 'id' | 'userId'> = {
         price: this.transactionForm.value.price,
         location: this.transactionForm.value.location,
         date: this.transactionForm.value.date,
         allocationId: this.allocationId,
       };
-      this.ts.create(transaction).subscribe((response) => {
-        this.isLoading = response.loading;
-        this.onFinish.emit();
-        this.initForm();
-      });
+
+      if (this.transaction) {
+        this.ts
+          .update({ ...this.transaction, ...transactionData })
+          .subscribe((response) => {
+            this.isLoading = response.loading;
+            this.onFinish.emit();
+            this.ms.init();
+          });
+      } else {
+        this.ts.create(transactionData).subscribe((response) => {
+          this.isLoading = response.loading;
+          this.onFinish.emit();
+          this.initForm();
+          this.ms.init();
+        });
+      }
     }
   }
 }

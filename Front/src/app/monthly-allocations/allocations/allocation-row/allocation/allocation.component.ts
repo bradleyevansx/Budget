@@ -34,7 +34,6 @@ export class AllocationComponent {
   ) {}
 
   @Input() allocation: Allocation & { transactions: Transaction[] };
-  @Output() onDelete: EventEmitter<string> = new EventEmitter();
   private _visible: boolean = false;
   @Input()
   get visible(): boolean {
@@ -54,7 +53,7 @@ export class AllocationComponent {
       icon: PrimeIcons.TRASH,
       command: () => {
         this.allocationService.delete(this.allocation.id).subscribe(() => {
-          this.onDelete.emit('');
+          this.ms.init();
         });
       },
     },
@@ -68,7 +67,6 @@ export class AllocationComponent {
 
   dialogVisible: boolean = false;
   handleNewTransactionCreated() {
-    this.ms.init();
     this.dialogVisible = false;
   }
 

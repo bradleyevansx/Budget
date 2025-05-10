@@ -1,10 +1,12 @@
-<p-drawer [(visible)]="visible" header="Drawer">
+<p-dialog [(visible)]="visible" header="New Allocation Group" [modal]="true">
   <form
     [formGroup]="newAllocation"
     (ngSubmit)="handleSubmit()"
     class="flex flex-col gap-6 p-4 items-center"
   >
-    <p-float-label>
+    <span>
+      <label for="name">Name</label>
+
       <input
         formControlName="name"
         pInputText
@@ -14,9 +16,9 @@
         class="w-full"
         [disabled]="loading"
       />
-      <label for="name">Name</label>
-    </p-float-label>
-    <p-float-label>
+    </span>
+    <span>
+      <label for="amount">Amount</label>
       <input
         formControlName="amount"
         pInputText
@@ -26,8 +28,7 @@
         class="w-full"
         [disabled]="loading"
       />
-      <label for="amount">Amount</label>
-    </p-float-label>
+    </span>
     <p-button
       [loading]="loading"
       [disabled]="loading"
@@ -35,4 +36,4 @@
       label="Save"
     />
   </form>
-</p-drawer>
+</p-dialog>
