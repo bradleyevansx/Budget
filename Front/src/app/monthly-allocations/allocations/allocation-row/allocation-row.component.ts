@@ -4,6 +4,7 @@ import { Transaction } from '../../../core/models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { AllocationComponent } from './allocation/allocation.component';
+import { toUsdString } from '../../../core/sdk/moneyHelpers';
 
 @Component({
   selector: 'app-allocation-row',
@@ -78,6 +79,10 @@ export class AllocationRowComponent {
       return this.totalsString;
     }
   }
+  get allocationAmount(): string {
+    return toUsdString(this.allocation.amount);
+  }
+
   colors = [
     'blue',
     'green',
