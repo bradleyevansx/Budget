@@ -20,8 +20,12 @@
         [style.width.%]="percentUsed"
       ></div>
     </div>
-    <span [ngClass]="textColor" class="ml-4 font-medium">
-      {{ percentUsedString }}
+    <span
+      [ngClass]="textColor"
+      class="ml-4 font-medium cursor-pointer"
+      (click)="togglePercentOrTotals($event)"
+    >
+      {{ displayString }}
     </span>
   </div>
 </li>

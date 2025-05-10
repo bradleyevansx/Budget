@@ -48,10 +48,36 @@ export class AllocationRowComponent {
     return (totalSpent / allocationAmount) * 100;
   }
 
+  percentOrTotals: 'percent' | 'totals' = 'percent';
+
+  togglePercentOrTotals(event: Event) {
+    event.stopPropagation();
+    this.percentOrTotals =
+      this.percentOrTotals === 'percent' ? 'totals' : 'percent';
+  }
+
   get percentUsedString(): string {
     return this.percentUsed.toFixed(2) + '%';
   }
 
+  get totalsString(): string {
+    const totalSpent = this.allocation.transactions.reduce(
+      (acc, transaction) => {
+        return acc + (transaction.price || 0);
+      },
+      0
+    );
+    const allocationAmount = this.allocation?.amount || 1;
+    return `$${totalSpent.toFixed(2)} / $${allocationAmount.toFixed(2)}`;
+  }
+
+  get displayString(): string {
+    if (this.percentOrTotals === 'percent') {
+      return this.percentUsedString;
+    } else {
+      return this.totalsString;
+    }
+  }
   colors = [
     'blue',
     'green',
