@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataViewModule } from 'primeng/dataview';
 import { Allocation } from '../core/models/allocation.model';
 import { AllocationService } from '../core/services/allocation.service';
-import { NewAllocationComponent } from './new-allocation/new-allocation.component';
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { Comparator, Operator } from '../core/models/query.model';
