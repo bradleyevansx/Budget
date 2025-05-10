@@ -32,10 +32,10 @@ import { MonthlyService } from '../core/services/monthly.service';
     InputTextModule,
     CommonModule,
   ],
-  templateUrl: './new-transaction.component.html',
-  styleUrl: './new-transaction.component.css',
+  templateUrl: './transaction-manager.component.html',
+  styleUrl: './transaction-manager.component.css',
 })
-export class NewTransactionComponent {
+export class TransactionManagerComponent {
   @Input()
   allocationId: number;
   @Input()

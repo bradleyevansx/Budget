@@ -11,7 +11,7 @@ import { Transaction } from '../../../../core/models/transaction.model';
 import { toUsdString } from '../../../../core/sdk/moneyHelpers';
 import { AllocationService } from '../../../../core/services/allocation.service';
 import { MonthlyService } from '../../../../core/services/monthly.service';
-import { NewTransactionComponent } from '../../../../new-transaction/new-transaction.component';
+import { TransactionManagerComponent } from '../../../../transaction-manager/transaction-manager.component';
 
 @Component({
   selector: 'app-allocation',
@@ -19,7 +19,7 @@ import { NewTransactionComponent } from '../../../../new-transaction/new-transac
     CardModule,
     ButtonModule,
     MenuModule,
-    NewTransactionComponent,
+    TransactionManagerComponent,
     CommonModule,
     DialogModule,
     AllocationsTransactionsTableComponent,

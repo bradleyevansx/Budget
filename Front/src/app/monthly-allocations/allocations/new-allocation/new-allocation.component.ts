@@ -11,7 +11,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { NewAllocationForm } from './NewAllocationForm';
+import { AllocationForm } from './NewAllocationForm';
 import { CommonModule } from '@angular/common';
 import { AllocationService } from '../../../core/services/allocation.service';
 import { SelectedMonthService } from '../../../core/services/selectedMonth.service';
@@ -46,7 +46,7 @@ export class NewAllocationComponent implements OnInit {
   }
   @Output() visibleChange = new EventEmitter<boolean>();
 
-  newAllocation: FormGroup<NewAllocationForm>;
+  newAllocation: FormGroup<AllocationForm>;
 
   loading: boolean = false;
 
@@ -74,7 +74,7 @@ export class NewAllocationComponent implements OnInit {
   }
 
   initForm() {
-    this.newAllocation = this.fb.group<NewAllocationForm>({
+    this.newAllocation = this.fb.group<AllocationForm>({
       name: this.fb.control('', Validators.required),
       amount: this.fb.control(0, Validators.required),
       date: this.fb.control(

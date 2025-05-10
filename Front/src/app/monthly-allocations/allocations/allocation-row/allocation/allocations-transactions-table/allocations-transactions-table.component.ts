@@ -3,11 +3,11 @@ import { TableModule } from 'primeng/table';
 import { Transaction } from '../../../../../core/models/transaction.model';
 import { toUsdString } from '../../../../../core/sdk/moneyHelpers';
 import { DialogModule } from 'primeng/dialog';
-import { NewTransactionComponent } from '../../../../../new-transaction/new-transaction.component';
+import { TransactionManagerComponent } from '../../../../../transaction-manager/transaction-manager.component';
 
 @Component({
   selector: 'app-allocations-transactions-table',
-  imports: [TableModule, DialogModule, NewTransactionComponent],
+  imports: [TableModule, DialogModule, TransactionManagerComponent],
   templateUrl: './allocations-transactions-table.component.html',
   styleUrl: './allocations-transactions-table.component.css',
 })
