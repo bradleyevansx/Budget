@@ -22,7 +22,7 @@ import { Transaction } from '../core/models/transaction.model';
 import { MonthlyService } from '../core/services/monthly.service';
 
 @Component({
-  selector: 'app-new-transaction',
+  selector: 'app-transaction-manager',
   imports: [
     ButtonModule,
     DatePickerModule,

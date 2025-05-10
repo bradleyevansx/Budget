@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewAllocationComponent } from './new-allocation.component';
+import { NewAllocationComponent } from './allocation-manager.component';
 
 describe('NewAllocationComponent', () => {
   let component: NewAllocationComponent;
@@ -8,9 +8,8 @@ describe('NewAllocationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewAllocationComponent]
-    })
-    .compileComponents();
+      imports: [NewAllocationComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NewAllocationComponent);
     component = fixture.componentInstance;

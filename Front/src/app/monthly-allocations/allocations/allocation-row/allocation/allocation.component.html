@@ -1,11 +1,11 @@
 <p-dialog [(visible)]="visible" [modal]="true">
   <ng-template #header>
     <div class="flex items-center">
-      <h3 class="text-3xl font-bold text-gray-800 truncate">
-        {{ allocation.name }}
-      </h3>
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-2">
+      <span>
+        <span class="flex items-center">
+          <h3 class="text-3xl font-bold text-gray-800 truncate">
+            {{ allocation.name }}
+          </h3>
           <p-menu appendTo="body" #menu [model]="items" [popup]="true"></p-menu>
           <p-button
             variant="text"
@@ -15,8 +15,13 @@
             severity="secondary"
             size="small"
           ></p-button>
-        </div>
-      </div>
+        </span>
+        <h5 class="text-lg text-gray-600">
+          {{ allocation.description }}
+          {{ formatMoney(totalTransactionsAmount) }} /
+          {{ formatMoney(allocation.amount) }}
+        </h5>
+      </span>
     </div>
   </ng-template>
   <div
@@ -26,13 +31,13 @@
   <p-dialog
     appendTo="body"
     [modal]="true"
-    [(visible)]="dialogVisible"
+    [(visible)]="transactionDialog"
     header="New Transaction"
   >
-    <app-new-transaction
+    <app-transaction-manager
       (onFinish)="handleNewTransactionCreated()"
       [allocationId]="allocation.id"
-    ></app-new-transaction>
+    ></app-transaction-manager>
   </p-dialog>
 
   <app-allocations-transactions-table
@@ -60,4 +65,13 @@
       </p>
     </div>
   </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="allocationDialog"
+  [modal]="true"
+  [header]="'Edit Allocation'"
+  [appendTo]="'body'"
+>
+  <app-allocation-manager [allocation]="allocation"></app-allocation-manager>
 </p-dialog>

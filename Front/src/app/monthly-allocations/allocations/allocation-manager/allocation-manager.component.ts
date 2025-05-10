@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -17,9 +16,10 @@ import { AllocationService } from '../../../core/services/allocation.service';
 import { SelectedMonthService } from '../../../core/services/selectedMonth.service';
 import { MonthlyService } from '../../../core/services/monthly.service';
 import { DialogModule } from 'primeng/dialog';
+import { Allocation } from '../../../core/models/allocation.model';
 
 @Component({
-  selector: 'app-new-allocation',
+  selector: 'app-allocation-manager',
   imports: [
     DialogModule,
     FloatLabelModule,
@@ -31,20 +31,11 @@ import { DialogModule } from 'primeng/dialog';
     InputTextModule,
     CommonModule,
   ],
-  templateUrl: './new-allocation.component.html',
-  styleUrl: './new-allocation.component.css',
+  templateUrl: './allocation-manager.component.html',
+  styleUrl: './allocation-manager.component.css',
 })
 export class NewAllocationComponent implements OnInit {
-  private _visible: boolean = false;
-  @Input()
-  get visible(): boolean {
-    return this._visible;
-  }
-  set visible(value: boolean) {
-    this._visible = value;
-    this.visibleChange.emit(this._visible);
-  }
-  @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() allocation: Allocation;
 
   newAllocation: FormGroup<AllocationForm>;
 
@@ -60,32 +51,41 @@ export class NewAllocationComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this.selectedMonthService.selectedMonth$.subscribe(
-      (selectedMonth: Date) => {
-        this.newAllocation.patchValue({
-          date: new Date(
-            selectedMonth.getFullYear(),
-            selectedMonth.getMonth(),
-            1
-          ),
-        });
-      }
-    );
+    if (this.allocation) {
+      this.newAllocation.patchValue({
+        name: this.allocation.name,
+        amount: this.allocation.amount,
+        date: new Date(this.allocation.date),
+      });
+    } else {
+      this.selectedMonthService.selectedMonth$.subscribe(
+        (selectedMonth: Date) => {
+          this.newAllocation.patchValue({
+            date: new Date(
+              selectedMonth.getFullYear(),
+              selectedMonth.getMonth(),
+              1
+            ),
+          });
+        }
+      );
+    }
   }
 
   initForm() {
     this.newAllocation = this.fb.group<AllocationForm>({
-      name: this.fb.control('', Validators.required),
-      amount: this.fb.control(0, Validators.required),
+      name: this.fb.control(this.allocation?.name || '', Validators.required),
+      amount: this.fb.control(
+        this.allocation?.amount || 0,
+        Validators.required
+      ),
       date: this.fb.control(
-        this.selectedMonthService.getSelectedMonth(),
+        this.allocation
+          ? new Date(this.allocation.date)
+          : this.selectedMonthService.getSelectedMonth(),
         Validators.required
       ),
     });
-  }
-
-  show() {
-    this.visible = true;
   }
 
   handleSubmit() {
@@ -96,12 +96,22 @@ export class NewAllocationComponent implements OnInit {
         date: this.newAllocation.value.date,
       };
       this.loading = true;
-      this.allocationService.create(allocation).subscribe((response) => {
-        this.loading = response.loading;
-        this.initForm();
-        this.ms.init();
-        this.visible = false;
-      });
+
+      if (this.allocation && this.allocation.id) {
+        this.allocationService
+          .update({ ...allocation, id: this.allocation.id })
+          .subscribe((response) => {
+            this.loading = response.loading;
+            this.initForm();
+            this.ms.init();
+          });
+      } else {
+        this.allocationService.create(allocation).subscribe((response) => {
+          this.loading = response.loading;
+          this.initForm();
+          this.ms.init();
+        });
+      }
     }
   }
 

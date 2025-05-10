@@ -12,6 +12,7 @@ import { toUsdString } from '../../../../core/sdk/moneyHelpers';
 import { AllocationService } from '../../../../core/services/allocation.service';
 import { MonthlyService } from '../../../../core/services/monthly.service';
 import { TransactionManagerComponent } from '../../../../transaction-manager/transaction-manager.component';
+import { NewAllocationComponent } from '../../allocation-manager/allocation-manager.component';
 
 @Component({
   selector: 'app-allocation',
@@ -23,6 +24,7 @@ import { TransactionManagerComponent } from '../../../../transaction-manager/tra
     CommonModule,
     DialogModule,
     AllocationsTransactionsTableComponent,
+    NewAllocationComponent,
   ],
   templateUrl: './allocation.component.html',
   styleUrl: './allocation.component.css',
@@ -57,6 +59,13 @@ export class AllocationComponent {
         });
       },
     },
+    {
+      label: 'Edit',
+      icon: PrimeIcons.PENCIL,
+      command: () => {
+        this.showAllocationDialog();
+      },
+    },
   ];
 
   get totalTransactionsAmount() {
@@ -65,16 +74,20 @@ export class AllocationComponent {
     }, 0);
   }
 
-  dialogVisible: boolean = false;
-  handleNewTransactionCreated() {
-    this.dialogVisible = false;
+  allocationDialog: boolean = false;
+
+  showAllocationDialog() {
+    this.allocationDialog = true;
   }
+
+  transactionDialog: boolean = false;
+  handleNewTransactionCreated() {}
 
   formatMoney(value: number) {
     return toUsdString(value);
   }
 
   showDialog() {
-    this.dialogVisible = true;
+    this.transactionDialog = true;
   }
 }

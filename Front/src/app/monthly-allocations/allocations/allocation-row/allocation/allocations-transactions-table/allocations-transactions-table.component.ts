@@ -32,6 +32,5 @@ export class AllocationsTransactionsTableComponent {
   handleRowSelect(transaction: Transaction) {
     this.selectedTransaction = { ...transaction };
     this.dialogVisible = true;
-    console.log('Selected transaction:', transaction);
   }
 }

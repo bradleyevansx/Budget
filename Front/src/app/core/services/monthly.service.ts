@@ -69,6 +69,7 @@ export class MonthlyService {
           ...x,
           date: new Date(x.date),
         }));
+        allocations.sort((a, b) => a.date.getTime() - b.date.getTime());
         this.allocationsSubject.next(allocations);
         this.initTransactions();
       });

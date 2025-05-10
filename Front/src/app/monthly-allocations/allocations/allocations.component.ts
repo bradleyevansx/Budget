@@ -7,11 +7,13 @@ import { AllocationRowComponent } from './allocation-row/allocation-row.componen
 import { MonthlyService } from '../../core/services/monthly.service';
 import { Allocation } from '../../core/models/allocation.model';
 import { Transaction } from '../../core/models/transaction.model';
-import { NewAllocationComponent } from './new-allocation/new-allocation.component';
+import { NewAllocationComponent } from './allocation-manager/allocation-manager.component';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-allocations',
   imports: [
+    DialogModule,
     CommonModule,
     ButtonModule,
     MenuModule,
@@ -56,7 +58,6 @@ export class AllocationsComponent {
       label: 'Add New',
       icon: 'pi pi-fw pi-plus',
       command: () => {
-        console.log('Add new allocation');
         this.addNewOpen = true;
       },
     },

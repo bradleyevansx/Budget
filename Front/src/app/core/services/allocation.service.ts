@@ -46,7 +46,7 @@ export class AllocationService {
   ): Observable<LoadingState<Partial<Allocation> & { id: number }>> {
     return of(t).pipe(
       switchMapWithLoading((data) =>
-        this.http.put<Partial<Allocation> & { id: number }>(
+        this.http.patch<Partial<Allocation> & { id: number }>(
           `/api/allocation`,
           data
         )

@@ -22,4 +22,6 @@
     ></app-allocation-row>
   </ul>
 </p-card>
-<app-new-allocation [(visible)]="addNewOpen"></app-new-allocation>
+<p-dialog [(visible)]="addNewOpen" [modal]="true" [header]="'New Allocation'">
+  <app-allocation-manager></app-allocation-manager>
+</p-dialog>
