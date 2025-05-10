@@ -50,35 +50,55 @@ export class StatsComponent {
         0
       )
     );
-    const totalDays = Math.ceil(
-      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
-    );
-    const totalWeeks = Math.ceil(totalDays / 7);
-    for (let i = 0; i < totalWeeks; i++) {
-      weeks[i] = 0;
+
+    // Initialize weeks array
+    let currentWeekStart = new Date(startDate);
+    while (currentWeekStart <= endDate) {
+      weeks.push(0);
+      currentWeekStart = new Date(
+        currentWeekStart.getTime() + 7 * 24 * 60 * 60 * 1000
+      );
     }
+
+    // Calculate spending per week
     this.transactions.forEach((transaction) => {
       const transactionDate = new Date(transaction.date);
-      if (
-        transactionDate >= startDate &&
-        transactionDate <= endDate &&
-        transactionDate.getDay() !== 0
-      ) {
-        const weekIndex = Math.floor((transactionDate.getDate() - 1) / 7);
+      if (transactionDate >= startDate && transactionDate <= endDate) {
+        const weekIndex = Math.floor(
+          (transactionDate.getTime() - startDate.getTime()) /
+            (7 * 24 * 60 * 60 * 1000)
+        );
         weeks[weekIndex] += transaction.price;
       }
     });
+
     return weeks;
   }
 
   get increaseFromLastWeekSpent(): string {
-    const lastWeekSpent = this.amountSpentByWeek.slice(-2, -1)[0];
-    const currentWeekSpent = this.amountSpentByWeek.slice(-1)[0];
-    if (lastWeekSpent === 0) {
-      return 'N/A';
-    }
-    const increase = ((currentWeekSpent - lastWeekSpent) / lastWeekSpent) * 100;
-    return `${increase.toFixed(2)}%`;
+    const weeks = this.amountSpentByWeek;
+    const currentDate = new Date();
+    const startDate = new Date(
+      Date.UTC(
+        this.ms.selectedMonth.getFullYear(),
+        this.ms.selectedMonth.getMonth(),
+        1
+      )
+    );
+
+    const currentWeekIndex = Math.floor(
+      (currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)
+    );
+
+    const lastWeekSpent =
+      currentWeekIndex > 0 && currentWeekIndex - 1 < weeks.length
+        ? weeks[currentWeekIndex - 1]
+        : 0;
+    const currentWeekSpent =
+      currentWeekIndex < weeks.length ? weeks[currentWeekIndex] : 0;
+
+    const increase = currentWeekSpent - lastWeekSpent;
+    return this.toUsdString(increase);
   }
 
   get totalSpent(): string {
