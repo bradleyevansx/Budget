@@ -109,7 +109,7 @@ export class StatsComponent {
     if (increase === 0) {
       return this.toUsdString(increase);
     }
-    return (increase > 0 ? '+' : '-') + this.toUsdString(increase);
+    return (increase > 0 ? '+' : '') + this.toUsdString(increase);
   }
 
   get totalSpent(): string {
@@ -183,7 +183,7 @@ export class StatsComponent {
     if (increase === 0) {
       return this.toUsdString(increase);
     }
-    return (increase > 0 ? '+' : '-') + this.toUsdString(increase);
+    return (increase > 0 ? '+' : '') + this.toUsdString(increase);
   }
 
   get totalFromIncomes(): string {
