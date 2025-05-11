@@ -48,7 +48,7 @@
           >Expected Income</span
         >
         <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          !28441
+          {{ totalFromExpectedIncomes }}
         </div>
       </div>
       <div
@@ -58,8 +58,8 @@
         <i class="pi pi-users text-cyan-500 !text-xl"></i>
       </div>
     </div>
-    <span class="text-primary font-medium">+%10 </span>
-    <span class="text-muted-color">compared to last month</span>
+    <span class="text-primary font-medium">{{ expectedIncomes.length }}</span>
+    <span class="text-muted-color"> total income sources</span>
   </p-card>
 </div>
 <div class="col-span-12 lg:col-span-6 xl:col-span-3">
@@ -68,7 +68,7 @@
       <div>
         <span class="block text-muted-color font-medium mb-4">Income</span>
         <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          $100
+          {{ totalFromIncomes }}
         </div>
       </div>
       <div
@@ -78,7 +78,9 @@
         <i class="pi pi-comment text-purple-500 !text-xl"></i>
       </div>
     </div>
-    <span class="text-primary font-medium">+$10 </span>
+    <span class="text-primary font-medium"
+      >{{ increaseFromLastWeekEarned }}
+    </span>
     <span class="text-muted-color">since last week</span>
   </p-card>
 </div>
