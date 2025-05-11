@@ -9,69 +9,67 @@
     >
     <div class="mt-1 text-muted-color">{{ allocationAmount }}</div>
   </div>
-  <div
-    class="mt-4 md:mt-0 grid grid-cols-2 gap-4 text-xs text-muted-color w-full"
-  >
+  <div class="flex justify-center gap-4 text-xs text-muted-color w-full">
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Remaining Budget')"
       [class]="getClass('Remaining Budget')"
     >
-      <span class="truncate w-full text-muted-color-emphasis">Remaining:</span>
+      <span class="truncate text-muted-color-emphasis w-fit">Remaining:</span>
       <div class="truncate">{{ remainingBudget }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Transaction Count')"
       [class]="getClass('Transaction Count')"
     >
-      <span class="truncate w-full text-muted-color-emphasis"
+      <span class="truncate text-muted-color-emphasis w-fit"
         >Transactions:</span
       >
       <div class="truncate">{{ transactionCount }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Average Transaction Amount')"
       [class]="getClass('Average Transaction Amount')"
     >
-      <span class="truncate w-full text-muted-color-emphasis"
+      <span class="truncate text-muted-color-emphasis w-fit"
         >Avg Transaction:</span
       >
       <div class="truncate">{{ averageTransactionAmount }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Largest Transaction')"
       [class]="getClass('Largest Transaction')"
     >
-      <span class="truncate w-full text-muted-color-emphasis">Largest:</span>
+      <span class="truncate text-muted-color-emphasis w-fit">Largest:</span>
       <div class="truncate">{{ largestTransaction }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Oldest Transaction')"
       [class]="getClass('Oldest Transaction')"
     >
-      <span class="truncate w-full text-muted-color-emphasis">Oldest:</span>
+      <span class="truncate text-muted-color-emphasis w-fit">Oldest:</span>
       <div class="truncate">{{ oldestTransaction }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'Days Since Last Transaction')"
       [class]="getClass('Days Since Last Transaction')"
     >
-      <span class="truncate w-full text-muted-color-emphasis"
+      <span class="truncate text-muted-color-emphasis w-fit"
         >Days Since Last:</span
       >
       <div class="truncate">{{ daysSinceLastTransaction }}</div>
     </div>
     <div
-      class="truncate"
+      class="truncate w-fit"
       (click)="handleStatClick($event, 'User With Most Transactions')"
       [class]="getClass('User With Most Transactions')"
     >
-      <span class="truncate w-full text-muted-color-emphasis">Top User:</span>
+      <span class="truncate text-muted-color-emphasis w-fit">Top User:</span>
       <div class="truncate">{{ userWithMostTransactions }}</div>
     </div>
   </div>

@@ -246,7 +246,10 @@ export class AllocationRowComponent {
     if (!maxUserId) {
       return 'No transactions';
     }
-    return `User ${maxUserId} (${userTransactionCounts[maxUserId]} transactions)`;
+
+    return `User ${
+      this.users.find((x) => x.id === Number(maxUserId))?.firstName
+    } (${userTransactionCounts[maxUserId]} transactions)`;
   }
 
   colors = [
