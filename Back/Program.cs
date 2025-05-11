@@ -64,7 +64,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:4200",
-            "https://budget-front-6kei.onrender.com")
+            "https://budget-front-6kei.onrender.com",
+            "https://musical-druid-9758eb.netlify.app/")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
