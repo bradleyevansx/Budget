@@ -13,11 +13,17 @@
     </div>
   </div>
   <ul class="list-none p-0 m-0">
-    <app-expected-income-row
-      *ngFor="let expectedIncome of expectedIncomeJoin; let index = index"
-      [index]="index"
-      [expectedIncome]="expectedIncome"
-    ></app-expected-income-row>
+    <li *ngFor="let expectedIncome of expectedIncomeJoin; let index = index">
+      <app-expected-income-row
+        [index]="index"
+        [expectedIncome]="expectedIncome"
+      ></app-expected-income-row>
+      <hr
+        *ngIf="index < expectedIncomeJoin.length - 1"
+        class="my-2"
+        style="border-color: lightgray"
+      />
+    </li>
   </ul>
 </p-card>
 <p-dialog

@@ -13,11 +13,17 @@
     </div>
   </div>
   <ul class="list-none p-0 m-0">
-    <app-allocation-row
-      *ngFor="let allocation of allocationTransactionJoin; let index = index"
-      [index]="index"
-      [allocation]="allocation"
-    ></app-allocation-row>
+    <li *ngFor="let allocation of allocationTransactionJoin; let index = index">
+      <app-allocation-row
+        [index]="index"
+        [allocation]="allocation"
+      ></app-allocation-row>
+      <hr
+        *ngIf="index < allocationTransactionJoin.length - 1"
+        class="my-2"
+        style="border-color: lightgray"
+      />
+    </li>
   </ul>
 </p-card>
 <p-dialog [(visible)]="addNewOpen" [modal]="true" [header]="'New Allocation'">

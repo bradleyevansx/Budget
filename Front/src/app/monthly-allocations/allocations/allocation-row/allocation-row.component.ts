@@ -1,10 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { Allocation } from '../../../core/models/allocation.model';
 import { Transaction } from '../../../core/models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { AllocationComponent } from './allocation/allocation.component';
 import { toUsdString } from '../../../core/sdk/moneyHelpers';
+import { User } from '../../../core/models/user.model';
+import { MonthlyService } from '../../../core/services/monthly.service';
 
 @Component({
   selector: 'app-allocation-row',
@@ -15,6 +17,88 @@ import { toUsdString } from '../../../core/sdk/moneyHelpers';
 export class AllocationRowComponent {
   @Input() allocation: Allocation & { transactions: Transaction[] };
   @Input() index: number;
+  users: User[];
+
+  constructor(private ms: MonthlyService) {
+    this.updateScreenSize();
+    this.setStats();
+    this.ms.users$.subscribe((users) => {
+      this.users = users;
+    });
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.updateScreenSize();
+    this.setStats();
+  }
+  screenSize: string = '';
+
+  private updateScreenSize() {
+    if (window.matchMedia('(min-width: 1536px)').matches) {
+      this.screenSize = '2xl';
+    } else if (window.matchMedia('(min-width: 1280px)').matches) {
+      this.screenSize = 'xl';
+    } else if (window.matchMedia('(min-width: 1024px)').matches) {
+      this.screenSize = 'lg';
+    } else if (window.matchMedia('(min-width: 768px)').matches) {
+      this.screenSize = 'md';
+    } else if (window.matchMedia('(min-width: 640px)').matches) {
+      this.screenSize = 'sm';
+    } else {
+      this.screenSize = 'xs';
+    }
+  }
+
+  statsOptions = [
+    'Average Transaction Amount',
+    'Largest Transaction',
+    'Oldest Transaction',
+    'Days Since Last Transaction',
+    'User With Most Transactions',
+    'Transaction Count',
+    'Remaining Budget',
+  ];
+  currStats = [];
+  statsQueue = [];
+
+  setStats() {
+    if (this.screenSize === '2xl') {
+      this.currStats = this.statsOptions.slice(0, 2);
+      this.statsQueue = this.statsOptions.slice(2);
+    } else if (this.screenSize === 'xl') {
+      this.currStats = this.statsOptions.slice(0, 2);
+      this.statsQueue = this.statsOptions.slice(2);
+    } else if (this.screenSize === 'lg') {
+      this.currStats = this.statsOptions.slice(0, 2);
+      this.statsQueue = this.statsOptions.slice(2);
+    } else if (this.screenSize === 'md') {
+      this.currStats = this.statsOptions.slice(0, 2);
+      this.statsQueue = this.statsOptions.slice(2);
+    } else if (this.screenSize === 'sm') {
+      this.currStats = [];
+      this.statsQueue = [...this.statsOptions];
+    } else {
+      this.currStats = [];
+      this.statsQueue = [...this.statsOptions];
+    }
+  }
+
+  getClass(stat: string) {
+    if (!this.currStats.includes(stat)) {
+      return 'hidden';
+    }
+    return 'whitespace-nowrap w-full';
+  }
+
+  handleStatClick(event: Event, stat: string) {
+    event.stopPropagation();
+    const frontOfQueue = this.statsQueue.shift();
+    const newCurr = [...this.currStats.filter((s) => s !== stat), frontOfQueue];
+    this.currStats = newCurr;
+    this.statsQueue.push(stat);
+  }
+
   get allocationName(): string {
     return this.allocation.name;
   }
@@ -31,7 +115,7 @@ export class AllocationRowComponent {
     }
 
     return `${mostRecentTransaction.date.toLocaleDateString()} - ${
-      mostRecentTransaction.userId
+      this.users.find((x) => x.id === mostRecentTransaction.userId)?.firstName
     } spent $${mostRecentTransaction.price} at ${
       mostRecentTransaction.location
     }`;
@@ -79,8 +163,90 @@ export class AllocationRowComponent {
       return this.totalsString;
     }
   }
+
   get allocationAmount(): string {
     return toUsdString(this.allocation.amount);
+  }
+
+  get remainingBudget(): string {
+    const totalSpent = this.allocation.transactions.reduce(
+      (acc, transaction) => acc + (transaction.price || 0),
+      0
+    );
+    const remaining = this.allocation.amount - totalSpent;
+    return toUsdString(remaining);
+  }
+
+  get transactionCount(): number {
+    return this.allocation.transactions.length;
+  }
+
+  get averageTransactionAmount(): string {
+    const totalSpent = this.allocation.transactions.reduce(
+      (acc, transaction) => acc + (transaction.price || 0),
+      0
+    );
+    const average =
+      this.allocation.transactions.length > 0
+        ? totalSpent / this.allocation.transactions.length
+        : 0;
+    return toUsdString(average);
+  }
+
+  get largestTransaction(): string {
+    const largest = this.allocation.transactions.reduce(
+      (prev, current) => (prev.price > current.price ? prev : current),
+      this.allocation.transactions[0]
+    );
+    return largest
+      ? `${this.users.find((x) => x.id === largest.userId)?.firstName} spent $${
+          largest.price
+        } at ${largest.location}`
+      : 'No transactions';
+  }
+
+  get oldestTransaction(): string {
+    const oldest = this.allocation.transactions.reduce(
+      (prev, current) => (prev.date < current.date ? prev : current),
+      this.allocation.transactions[0]
+    );
+    return oldest
+      ? `${oldest.date.toLocaleDateString()} - ${
+          this.users.find((x) => x.id === oldest.userId).firstName
+        } spent $${oldest.price} at ${oldest.location}`
+      : 'No transactions';
+  }
+
+  get daysSinceLastTransaction(): number {
+    const mostRecentTransaction = this.allocation.transactions.reduce(
+      (prev, current) => (prev.date > current.date ? prev : current),
+      this.allocation.transactions[0]
+    );
+    return mostRecentTransaction
+      ? Math.floor(
+          (new Date().getTime() -
+            new Date(mostRecentTransaction.date).getTime()) /
+            (1000 * 60 * 60 * 24)
+        )
+      : 0;
+  }
+
+  get userWithMostTransactions(): string {
+    const userTransactionCounts = this.allocation.transactions.reduce(
+      (acc, transaction) => {
+        acc[transaction.userId] = (acc[transaction.userId] || 0) + 1;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
+    const maxUserId = Object.keys(userTransactionCounts).reduce(
+      (a, b) => (userTransactionCounts[a] > userTransactionCounts[b] ? a : b),
+      0
+    );
+    if (!maxUserId) {
+      return 'No transactions';
+    }
+    return `User ${maxUserId} (${userTransactionCounts[maxUserId]} transactions)`;
   }
 
   colors = [

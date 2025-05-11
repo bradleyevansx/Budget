@@ -1,14 +1,81 @@
 <li
-  class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 cursor-pointer"
+  class="flex flex-col md:flex-row md:items-center md:justify-between cursor-pointer"
   (click)="showDialog()"
 >
-  <div>
+  <div class="w-60">
     <span
       class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
       >{{ allocationName }}</span
     >
     <div class="mt-1 text-muted-color">{{ allocationAmount }}</div>
   </div>
+  <div
+    class="mt-4 md:mt-0 grid grid-cols-2 gap-4 text-xs text-muted-color w-full"
+  >
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Remaining Budget')"
+      [class]="getClass('Remaining Budget')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis">Remaining:</span>
+      <div class="truncate">{{ remainingBudget }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Transaction Count')"
+      [class]="getClass('Transaction Count')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis"
+        >Transactions:</span
+      >
+      <div class="truncate">{{ transactionCount }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Average Transaction Amount')"
+      [class]="getClass('Average Transaction Amount')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis"
+        >Avg Transaction:</span
+      >
+      <div class="truncate">{{ averageTransactionAmount }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Largest Transaction')"
+      [class]="getClass('Largest Transaction')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis">Largest:</span>
+      <div class="truncate">{{ largestTransaction }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Oldest Transaction')"
+      [class]="getClass('Oldest Transaction')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis">Oldest:</span>
+      <div class="truncate">{{ oldestTransaction }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'Days Since Last Transaction')"
+      [class]="getClass('Days Since Last Transaction')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis"
+        >Days Since Last:</span
+      >
+      <div class="truncate">{{ daysSinceLastTransaction }}</div>
+    </div>
+    <div
+      class="truncate"
+      (click)="handleStatClick($event, 'User With Most Transactions')"
+      [class]="getClass('User With Most Transactions')"
+    >
+      <span class="truncate w-full text-muted-color-emphasis">Top User:</span>
+      <div class="truncate">{{ userWithMostTransactions }}</div>
+    </div>
+  </div>
+
   <div class="mt-2 md:mt-0 flex items-center">
     <div
       class="bg-surface-300 dark:bg-surface-500 rounded-border overflow-hidden w-40 lg:w-24"
@@ -29,6 +96,7 @@
     </span>
   </div>
 </li>
+
 <app-allocation
   [(visible)]="visible"
   [allocation]="allocation"
