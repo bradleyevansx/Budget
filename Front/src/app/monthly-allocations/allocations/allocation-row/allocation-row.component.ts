@@ -190,6 +190,11 @@ export class AllocationRowComponent {
       this.allocation.transactions.length > 0
         ? totalSpent / this.allocation.transactions.length
         : 0;
+
+    if (average === 0) {
+      return 'No transactions';
+    }
+
     return toUsdString(average);
   }
 
@@ -217,18 +222,19 @@ export class AllocationRowComponent {
       : 'No transactions';
   }
 
-  get daysSinceLastTransaction(): number {
+  get daysSinceLastTransaction(): string {
     const mostRecentTransaction = this.allocation.transactions.reduce(
       (prev, current) => (prev.date > current.date ? prev : current),
       this.allocation.transactions[0]
     );
+
     return mostRecentTransaction
       ? Math.floor(
           (new Date().getTime() -
             new Date(mostRecentTransaction.date).getTime()) /
             (1000 * 60 * 60 * 24)
-        )
-      : 0;
+        ).toString()
+      : 'No transactions';
   }
 
   get userWithMostTransactions(): string {
