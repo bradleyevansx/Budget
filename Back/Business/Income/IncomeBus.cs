@@ -1,75 +1,68 @@
-using System.Linq.Expressions;
-using Back.Business.Users;
+using Back.Business.Transactions;
 using Back.Controllers;
 using Back.Models;
-using Back.Repositories.Transactions;
+using Back.Repositories.Income;
 using Back.Repositories.Users;
 using Back.SDK;
 
-namespace Back.Business.Transactions;
+namespace Back.Business.Income;
 
-public class IncomeBus : IBusiness<BusTransaction, NewBusTransaction, UpdateBusTransaction>
+public class IncomeBus : IBusiness<BusIncome, NewBusIncome, UpdateBusIncome>
 {
-    private readonly TransactionRepository _transactionRepository;
+    private readonly IncomeRepository _incomeRepository;
     private readonly UserDetailsService _userDetailsService;
     private readonly UserRepository _userRepository;
     
-    public IncomeBus(TransactionRepository transactionRepository, UserDetailsService userDetailsService, UserRepository userRepository)
+    public IncomeBus(IncomeRepository incomeRepository, UserDetailsService userDetailsService, UserRepository userRepository)
     {
-        _transactionRepository = transactionRepository;
+        _incomeRepository = incomeRepository;
         _userDetailsService = userDetailsService;
         _userRepository = userRepository;
     }
     
-    public async Task<BusTransaction> CreateAsync(NewBusTransaction entity)
+    public async Task<BusIncome> CreateAsync(NewBusIncome entity)
     {
-        var userId = _userDetailsService.GetUserId();
-        var dbTransaction = entity.ToDb(userId);
+        var dbIncome = entity.ToDb();
 
-        var res = await _transactionRepository.CreateAsync(dbTransaction);
+        var res = await _incomeRepository.CreateAsync(dbIncome);
 
         return res.ToBus();
     }
     
-    public async Task<List<BusTransaction>> GetWhereAsync(IBusQuery? query, Pagination? pagination)
+    public async Task<List<BusIncome>> GetWhereAsync(IBusQuery? query, Pagination? pagination)
     {
-        var dbQuery = DbQueryBuilder.BuildPredicate<DbTransaction>(query);
-        var res = await _transactionRepository.GetWhereAsync(dbQuery, pagination);
+        var dbQuery = DbQueryBuilder.BuildPredicate<DbIncome>(query);
+        var res = await _incomeRepository.GetWhereAsync(dbQuery, pagination);
         return res.Select(x => x.ToBus()).ToList();
     }
 
-    public async Task<BusTransaction?> UpdateAsync(UpdateBusTransaction entity)
+    public async Task<BusIncome?> UpdateAsync(UpdateBusIncome entity)
     {
-        if (entity.UserId != null && !(await UserExists(entity.UserId.Value)))
-        {
-            return null;
-        }
-       
         var dbQuery = entity.ToDb();
         var id = entity.Id;
 
-        var res = await _transactionRepository.UpdateAsync(id, dbQuery);
+        var res = await _incomeRepository.UpdateAsync(id, dbQuery);
         
         if (res == null) return null;
 
         return res.ToBus();
     }
     
-   public async Task<BusTransaction?> DeleteByIdAsync(int id)
-   {
-       var res = await _transactionRepository.DeleteByIdAsync(id);
+    public async Task<BusIncome?> DeleteByIdAsync(int id)
+    {
+        var res = await _incomeRepository.DeleteByIdAsync(id);
        
-       if (res == null)
-       {
-           return null;
-       }
+        if (res == null)
+        {
+            return null;
+        }
 
-       return res.ToBus();
-   }
+        return res.ToBus();
+    }
 
-   public async Task<bool> UserExists(int userId)
-   {
-       var res = await _userRepository.GetWhereAsync(x => x.Id == userId, null);
-       return res.Count != 0;
-   }
+    public async Task<bool> UserExists(int userId)
+    {
+        var res = await _userRepository.GetWhereAsync(x => x.Id == userId, null);
+        return res.Count != 0;
+    }
 }

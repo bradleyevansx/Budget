@@ -1,4 +1,5 @@
 using Back.Business.Allocations;
+using Back.Business.ExpectedIncome;
 
 namespace Back.Controllers.Allocations;
 
@@ -9,9 +10,9 @@ public class UpdateAppExpectedIncome
     public decimal? Amount { get; set; }
     public DateTime Date { get; set; }
 
-    public UpdateBusAllocation ToBus()
+    public UpdateBusExpectedIncome ToBus()
     {
-        var res = new UpdateBusAllocation();
+        var res = new UpdateBusExpectedIncome();
         res.Id = Id;
         res.Name = Name;
         res.Amount = Amount;

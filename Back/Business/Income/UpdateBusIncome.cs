@@ -1,3 +1,4 @@
+using Back.Repositories.Income;
 using Back.Repositories.Transactions;
 
 namespace Back.Business.Transactions;
@@ -5,19 +6,17 @@ namespace Back.Business.Transactions;
 public class UpdateBusIncome : IUpdateBusEntity
 {
     public int Id { get; set; }
-    public int? UserId { get; set; } = null;
-    public decimal? Price { get; set; } = null;
-    public string? Location { get; set; } = null;
+    public string? Title { get; set; } = null;
+    public decimal? Amount { get; set; } = null;
     public DateTime? Date { get; set; } = null;
-    public int? AllocationId { get; set; } = null;
+    public int? ExpectedIncomeId { get; set; } = null;
 
-    public UpdateDbTransaction ToDb()
+    public UpdateDbIncome ToDb()
     {
-        var res = new UpdateDbTransaction();
-        res.AllocationId = AllocationId;
-        res.UserId = UserId;
-        res.Price = Price;
-        res.Location = Location;
+        var res = new UpdateDbIncome();
+        res.ExpectedIncomeId = ExpectedIncomeId;
+        res.Title = Title;
+        res.Amount = Amount;
         res.Date = Date;
         return res;
     }

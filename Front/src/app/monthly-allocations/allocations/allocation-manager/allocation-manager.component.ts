@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -36,6 +36,7 @@ import { Allocation } from '../../../core/models/allocation.model';
 })
 export class NewAllocationComponent implements OnInit {
   @Input() allocation: Allocation;
+  @Output() finish: EventEmitter<void> = new EventEmitter<void>();
 
   newAllocation: FormGroup<AllocationForm>;
 
@@ -104,12 +105,14 @@ export class NewAllocationComponent implements OnInit {
             this.loading = response.loading;
             this.initForm();
             this.ms.init();
+            this.finish.emit();
           });
       } else {
         this.allocationService.create(allocation).subscribe((response) => {
           this.loading = response.loading;
           this.initForm();
           this.ms.init();
+          this.finish.emit();
         });
       }
     }

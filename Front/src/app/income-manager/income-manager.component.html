@@ -1,0 +1,46 @@
+<form
+  [formGroup]="incomeForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-6 p-4"
+>
+  <span>
+    <label for="amount">Amount</label>
+    <input
+      [disabled]="isLoading"
+      formControlName="amount"
+      pInputText
+      id="amount"
+      type="number"
+      class="w-full"
+    />
+  </span>
+  <span>
+    <label for="title">Title</label>
+    <input
+      [disabled]="isLoading"
+      formControlName="title"
+      pInputText
+      id="title"
+      type="text"
+      class="w-full"
+    />
+  </span>
+  <span class="flex flex-col gap-1 relative">
+    <label for="date">Date</label>
+    <p-date-picker
+      [disabled]="isLoading"
+      formControlName="date"
+      id="date"
+      class="w-fit z-10"
+      appendTo="body"
+    />
+  </span>
+  <p-button
+    [loading]="isLoading"
+    class="w-full"
+    type="submit"
+    [disabled]="isLoading"
+  >
+    Submit
+  </p-button>
+</form>

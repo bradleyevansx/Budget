@@ -1,10 +1,11 @@
 using System.Security.Claims;
 using System.Text.Json;
 using Back.Business;
-using Back.Business.Transactions;
+using Back.Business.Income;
 using Back.Controllers.Filters;
+using Back.Controllers.Income;
 using Back.Controllers.Transactions;
-using Back.Models;
+using Back.Repositories.Income;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,18 +17,18 @@ namespace Back.Controllers;
 [Route("api/[controller]")]
 public class IncomeController : ControllerBase
 {
-    public readonly TransactionBus _transactionBus;
+    public readonly IncomeBus _incomeBus;
 
-    public IncomeController(TransactionBus transactionBus)
+    public IncomeController(IncomeBus incomeBus)
     {
-        _transactionBus = transactionBus;
+        _incomeBus = incomeBus;
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTransaction([FromBody] NewAppTransaction entity)
+    public async Task<IActionResult> CreateTransaction([FromBody] NewAppIncome entity)
     {
         var bus = entity.ToBus();
-        var res = await _transactionBus.CreateAsync(bus);
+        var res = await _incomeBus.CreateAsync(bus);
         return Ok(res.ToApp());
     }
 
@@ -37,18 +38,18 @@ public class IncomeController : ControllerBase
         IBusQuery? busLayer = null;
         if (body.Query != null)
         {
-            busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbTransaction>(body.Query);
+            busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbIncome>(body.Query);
         }
 
-        var res = await _transactionBus.GetWhereAsync(busLayer, null);
+        var res = await _incomeBus.GetWhereAsync(busLayer, null);
         return Ok(res.Select(x => x.ToApp()).ToList());
     }
     
     [HttpPatch]
-    public async Task<IActionResult> UpdateTransaction([FromBody] UpdateAppTransaction entity)
+    public async Task<IActionResult> UpdateIncome([FromBody] UpdateAppIncome entity)
     {
         var bus = entity.ToBus();
-        var res = await _transactionBus.UpdateAsync(bus);
+        var res = await _incomeBus.UpdateAsync(bus);
         if(res == null) return NotFound();
         return Ok(res.ToApp());
     }
@@ -56,7 +57,7 @@ public class IncomeController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteById(int id)
     {
-        var res = await _transactionBus.DeleteByIdAsync(id);
+        var res = await _incomeBus.DeleteByIdAsync(id);
         if (res == null)
         {
             return NotFound();

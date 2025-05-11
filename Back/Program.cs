@@ -1,9 +1,13 @@
 using System.Text;
 using Back.Business.Allocations;
+using Back.Business.ExpectedIncome;
+using Back.Business.Income;
 using Back.Business.Transactions;
 using Back.Business.Users;
 using Back.Data;
 using Back.Repositories.Allocations;
+using Back.Repositories.ExpectedIncome;
+using Back.Repositories.Income;
 using Back.Repositories.Transactions;
 using Back.Repositories.Users;
 using Back.SDK;
@@ -23,6 +27,10 @@ builder.Services.AddScoped<AllocationBus>();
 builder.Services.AddScoped<AllocationRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserBus>();
+builder.Services.AddScoped<IncomeBus>();
+builder.Services.AddScoped<IncomeRepository>();
+builder.Services.AddScoped<ExpectedIncomeBus>();
+builder.Services.AddScoped<ExpectedIncomeRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>

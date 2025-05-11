@@ -11,23 +11,33 @@ import { SelectedMonthService } from './selectedMonth.service';
 import { Comparator, Operator } from '../models/query.model';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
+import { Income } from '../models/income.model';
+import { ExpectedIncome } from '../models/expected-income.model';
+import { ExpectedIncomeService } from './expected-income.service';
+import { IncomeService } from './income.service';
 
 @Injectable({ providedIn: 'root' })
 export class MonthlyService {
   private allocationsSubject = new BehaviorSubject<Allocation[]>([]);
   private transactionsSubject = new BehaviorSubject<Transaction[]>([]);
   private usersSubject = new BehaviorSubject<User[]>([]);
+  private incomesSubject = new BehaviorSubject<Income[]>([]);
+  private expectedIncomesSubject = new BehaviorSubject<ExpectedIncome[]>([]);
   selectedMonth: Date = new Date();
 
   allocations$ = this.allocationsSubject.asObservable();
   transactions$ = this.transactionsSubject.asObservable();
   users$ = this.usersSubject.asObservable();
+  incomes$ = this.incomesSubject.asObservable();
+  expectedIncomes$ = this.expectedIncomesSubject.asObservable();
 
   constructor(
     private as: AllocationService,
     private ts: TransactionService,
     private sms: SelectedMonthService,
-    private us: UserService
+    private us: UserService,
+    private is: IncomeService,
+    private eis: ExpectedIncomeService
   ) {
     this.init();
   }
@@ -43,6 +53,75 @@ export class MonthlyService {
     this.sms.selectedMonth$.subscribe((month) => {
       this.selectedMonth = month;
       this.initAllocations();
+      this.initExpectedIncomes();
+    });
+  }
+
+  initExpectedIncomes() {
+    this.eis
+      .getWhere({
+        operator: Operator.And,
+        children: [
+          {
+            comparator: Comparator.GreaterThanOrEqualTo,
+            propertyName: 'date',
+            value: new Date(
+              Date.UTC(
+                this.selectedMonth.getFullYear(),
+                this.selectedMonth.getMonth(),
+                1
+              )
+            ),
+          },
+          {
+            comparator: Comparator.LessThanOrEqualTo,
+            propertyName: 'date',
+            value: new Date(
+              Date.UTC(
+                this.selectedMonth.getFullYear(),
+                this.selectedMonth.getMonth() + 1,
+                0
+              )
+            ),
+          },
+        ],
+      })
+
+      .subscribe((res) => {
+        if (res.loading) return;
+        const expectedIncomes = res.data.map((x) => ({
+          ...x,
+          date: new Date(x.date),
+        }));
+        expectedIncomes.sort((a, b) => a.date.getTime() - b.date.getTime());
+        this.expectedIncomesSubject.next(expectedIncomes);
+        this.initIncomes();
+      });
+  }
+
+  initIncomes() {
+    const expectedIncomes = this.expectedIncomesSubject.getValue();
+    const incomeRequests = expectedIncomes.map((expectedIncome) =>
+      this.is.getWhere({
+        operator: Operator.And,
+        children: [
+          {
+            comparator: Comparator.Equals,
+            propertyName: 'expectedIncomeId',
+            value: expectedIncome.id,
+          },
+        ],
+      })
+    );
+    forkJoin(incomeRequests).subscribe((responses) => {
+      const incomes = responses.flatMap((res) =>
+        res.data.map((x) => ({
+          ...x,
+          date: new Date(x.date),
+        }))
+      );
+      incomes.sort((a, b) => a.date.getTime() - b.date.getTime());
+      this.incomesSubject.next(incomes);
     });
   }
 

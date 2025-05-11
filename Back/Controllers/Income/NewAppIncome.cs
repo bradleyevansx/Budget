@@ -1,20 +1,21 @@
+using Back.Business.Income;
 using Back.Business.Transactions;
 
-namespace Back.Controllers.Transactions;
+namespace Back.Controllers.Income;
 
 public class NewAppIncome 
 {
-    public decimal Price { get; set; }
-    public string Location { get; set; } = string.Empty; 
+    public string Title { get; set; }
+    public decimal Amount { get; set; }
     public DateTime Date { get; set; }
-    public int? AllocationId { get; set; } = null;
+    public int ExpectedIncomeId { get; set; }
 
-    public NewBusTransaction ToBus()
+    public NewBusIncome ToBus()
     {
-        var res = new NewBusTransaction();
-        res.AllocationId = AllocationId;
-        res.Price = Price;
-        res.Location = Location;
+        var res = new NewBusIncome();
+        res.Title = Title;
+        res.ExpectedIncomeId = ExpectedIncomeId;
+        res.Amount = Amount;
         res.Date = Date;
         return res;
     }

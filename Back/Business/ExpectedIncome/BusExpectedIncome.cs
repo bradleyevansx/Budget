@@ -1,8 +1,8 @@
 using Back.Controllers.Allocations;
 
-namespace Back.Business.Allocations;
+namespace Back.Business.ExpectedIncome;
 
-public class BusAllocation : IBusEntity
+public class BusExpectedIncome : IBusEntity
 {
      public int Id { get; set; }
      public string Name { get; set; } = string.Empty;

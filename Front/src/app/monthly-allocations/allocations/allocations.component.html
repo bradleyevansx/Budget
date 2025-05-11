@@ -12,16 +12,16 @@
       <p-menu #menu [popup]="true" [model]="items"></p-menu>
     </div>
   </div>
-  <ul
-    class="list-none p-0 m-0"
-    *ngFor="let allocation of allocationTransactionJoin; let index = index"
-  >
+  <ul class="list-none p-0 m-0">
     <app-allocation-row
+      *ngFor="let allocation of allocationTransactionJoin; let index = index"
       [index]="index"
       [allocation]="allocation"
     ></app-allocation-row>
   </ul>
 </p-card>
 <p-dialog [(visible)]="addNewOpen" [modal]="true" [header]="'New Allocation'">
-  <app-allocation-manager></app-allocation-manager>
+  <app-allocation-manager
+    (finish)="handleNewAllocation()"
+  ></app-allocation-manager>
 </p-dialog>

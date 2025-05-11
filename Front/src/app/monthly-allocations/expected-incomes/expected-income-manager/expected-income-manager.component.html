@@ -1,0 +1,37 @@
+<form
+  [formGroup]="newExpectedIncome"
+  (ngSubmit)="handleSubmit()"
+  class="flex flex-col gap-6 p-4 items-center"
+>
+  <span>
+    <label for="name">Name</label>
+
+    <input
+      formControlName="name"
+      pInputText
+      id="name"
+      pSize="small"
+      type="text"
+      class="w-full"
+      [disabled]="loading"
+    />
+  </span>
+  <span>
+    <label for="amount">Amount</label>
+    <input
+      formControlName="amount"
+      pInputText
+      id="amount"
+      pSize="small"
+      type="number"
+      class="w-full"
+      [disabled]="loading"
+    />
+  </span>
+  <p-button
+    [loading]="loading"
+    [disabled]="loading"
+    type="submit"
+    label="Save"
+  />
+</form>

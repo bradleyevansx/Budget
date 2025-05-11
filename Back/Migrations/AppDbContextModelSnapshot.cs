@@ -88,6 +88,66 @@ namespace Back.Migrations
                     b.ToTable("allocations");
                 });
 
+            modelBuilder.Entity("Back.Repositories.ExpectedIncome.DbExpectedIncome", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("expected_incomes");
+                });
+
+            modelBuilder.Entity("Back.Repositories.Income.DbIncome", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
+
+                    b.Property<int>("ExpectedIncomeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("expected_income_id");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpectedIncomeId");
+
+                    b.ToTable("incomes");
+                });
+
             modelBuilder.Entity("Back.Repositories.Users.DbUser", b =>
                 {
                     b.Property<int>("Id")
@@ -132,6 +192,17 @@ namespace Back.Migrations
                     b.Navigation("Allocation");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Back.Repositories.Income.DbIncome", b =>
+                {
+                    b.HasOne("Back.Repositories.ExpectedIncome.DbExpectedIncome", "ExpectedIncome")
+                        .WithMany()
+                        .HasForeignKey("ExpectedIncomeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpectedIncome");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,5 @@
+using Back.Business.Allocations;
+using Back.Business.ExpectedIncome;
 using Back.Repositories.Interfaces;
 
 namespace Back.Repositories.ExpectedIncome;

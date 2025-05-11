@@ -62,4 +62,7 @@ export class AllocationsComponent {
       },
     },
   ];
+  handleNewAllocation() {
+    this.addNewOpen = false;
+  }
 }

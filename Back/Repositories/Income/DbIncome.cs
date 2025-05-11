@@ -1,32 +1,26 @@
-using Back.Business;
+using Back.Business.Income;
 using Back.Business.Transactions;
-using Back.Controllers;
-using Back.Repositories.Allocations;
+using Back.Repositories.ExpectedIncome;
 using Back.Repositories.Interfaces;
 using Back.Repositories.Users;
 
-namespace Back.Models;
+namespace Back.Repositories.Income;
 
-public class DbTransaction : IEntity<BusTransaction>
+public class DbIncome : IEntity<BusIncome>
 {
     public int Id { get; set; }
-
-    public int? AllocationId { get; set; }
-    public DbAllocation? Allocation { get; set; }
-
-    public int UserId { get; set; }
-    public DbUser User { get; set; }
-    public decimal Price { get; set; }
-    public string Location { get; set; } = string.Empty;
+    public string Title { get; set; }
+    public int ExpectedIncomeId { get; set; }
+    public DbExpectedIncome ExpectedIncome { get; set; }
+    public decimal Amount { get; set; }
     public DateTime Date { get; set; }    
-    public BusTransaction ToBus()
+    public BusIncome ToBus()
     {
-        var res = new BusTransaction();
-        res.AllocationId = AllocationId;
+        var res = new BusIncome();
+        res.Title = Title;
+        res.ExpectedIncomeId = ExpectedIncomeId;
         res.Date = Date;
-        res.Location = Location;
-        res.Price = Price;
-        res.UserId = UserId;
+        res.Amount = Amount;
         res.Id = Id;
         return res;
     }

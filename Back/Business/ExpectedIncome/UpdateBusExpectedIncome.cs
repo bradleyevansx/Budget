@@ -1,17 +1,17 @@
-using Back.Repositories.Allocations;
+using Back.Repositories.ExpectedIncome;
 
-namespace Back.Business.Allocations;
+namespace Back.Business.ExpectedIncome;
 
-public class UpdateBusAllocation : IUpdateBusEntity
+public class UpdateBusExpectedIncome : IUpdateBusEntity
 {
     public int Id { get; set; }
     public string? Name { get; set; } = null;
     public decimal? Amount { get; set; }  = null;
     public DateTime? Date { get; set; } = null;
 
-    public UpdateDbAllocation ToDb()
+    public UpdateDbExpectedIncome ToDb()
     {
-        var res = new UpdateDbAllocation();
+        var res = new UpdateDbExpectedIncome();
         res.Name = Name;
         res.Amount = Amount;
         res.Date = Date;

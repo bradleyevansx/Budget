@@ -1,30 +1,29 @@
-using Back.Business.Allocations;
-using Back.Business.Transactions;
+using Back.Business.ExpectedIncome;
+using Back.Controllers.Allocations;
 using Back.Controllers.Filters;
-using Back.Controllers.Transactions;
-using Back.Repositories.Allocations;
+using Back.Repositories.ExpectedIncome;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Back.Controllers.Allocations;
+namespace Back.Controllers.ExpectedIncome;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class AllocationController : ControllerBase
+public class ExpectedIncomeController : ControllerBase
 {
-    public readonly AllocationBus _allocationBus;
+    public readonly ExpectedIncomeBus _expectedIncomeBus;
 
-    public AllocationController(AllocationBus allocationBus)
+    public ExpectedIncomeController(ExpectedIncomeBus expectedIncomeBus)
     {
-        _allocationBus = allocationBus;
+        _expectedIncomeBus = expectedIncomeBus;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] NewAppAllocation entity)
+    public async Task<IActionResult> Create([FromBody] NewAppExpectedIncome entity)
     {
         var bus = entity.ToBus();
-        var res = await _allocationBus.CreateAsync(bus);
+        var res = await _expectedIncomeBus.CreateAsync(bus);
         return Ok(res.ToApp());
     }
 
@@ -34,18 +33,18 @@ public class AllocationController : ControllerBase
         IBusQuery? busLayer = null;
         if (body.Query != null)
         {
-            busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbAllocation>(body.Query);
+            busLayer = AppToBusQueryConverter.ConvertToBusinessQuery<DbExpectedIncome>(body.Query);
         }
 
-        var res = await _allocationBus.GetWhereAsync(busLayer, null);
+        var res = await _expectedIncomeBus.GetWhereAsync(busLayer, null);
         return Ok(res.Select(x => x.ToApp()).ToList());
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update([FromBody] UpdateAppAllocation entity)
+    public async Task<IActionResult> Update([FromBody] UpdateAppExpectedIncome entity)
     {
         var bus = entity.ToBus();
-        var res = await _allocationBus.UpdateAsync(bus);
+        var res = await _expectedIncomeBus.UpdateAsync(bus);
         if(res == null) return NotFound();
         return Ok(res.ToApp());
     }
@@ -53,7 +52,7 @@ public class AllocationController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteById(int id)
     {
-        var res = await _allocationBus.DeleteByIdAsync(id);
+        var res = await _expectedIncomeBus.DeleteByIdAsync(id);
         if (res == null)
         {
             return NotFound();

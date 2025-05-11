@@ -1,6 +1,6 @@
-using Back.Business.Allocations;
+using Back.Business.ExpectedIncome;
 using Back.Data;
 
-namespace Back.Repositories.Allocations;
+namespace Back.Repositories.ExpectedIncome;
 
-public class ExpectedIncome(AppDbContext context) : BaseRepository<DbAllocation, BusAllocation, UpdateDbAllocation>(context);
+public class ExpectedIncomeRepository(AppDbContext context) : BaseRepository<DbExpectedIncome, BusExpectedIncome, UpdateDbExpectedIncome>(context);

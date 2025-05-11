@@ -1,21 +1,20 @@
-using Back.Models;
+using Back.Repositories.Income;
 
-namespace Back.Business.Transactions;
+namespace Back.Business.Income;
 
 public class NewBusIncome : INewBusEntity
 { 
-    public decimal Price { get; set; }
-    public string Location { get; set; } = string.Empty; 
+    public string Title { get; set; }
+    public decimal Amount { get; set; }
     public DateTime Date { get; set; }
-    public int? AllocationId { get; set; } = null;
+    public int ExpectedIncomeId { get; set; }
 
-    public DbTransaction ToDb(int userId)
+    public DbIncome ToDb()
     {
-        var response = new DbTransaction();
-        response.AllocationId = AllocationId;
-        response.UserId = userId;
-        response.Price = this.Price;
-        response.Location = this.Location;
+        var response = new DbIncome();
+        response.ExpectedIncomeId = ExpectedIncomeId;
+        response.Title = Title;
+        response.Amount = this.Amount;
         response.Date = this.Date;
         return response;
     }

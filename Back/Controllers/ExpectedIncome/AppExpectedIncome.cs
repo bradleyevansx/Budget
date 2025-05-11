@@ -1,4 +1,5 @@
-namespace Back.Controllers.Allocations;
+
+namespace Back.Controllers.ExpectedIncome;
 
 public class AppExpectedIncome
 {

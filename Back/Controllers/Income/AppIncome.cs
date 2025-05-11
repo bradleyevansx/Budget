@@ -1,11 +1,11 @@
-namespace Back.Controllers.Transactions;
 
-public class AppTransaction
+namespace Back.Controllers.Income;
+
+public class AppIncome
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
-    public decimal Price { get; set; }
-    public string Location { get; set; } = string.Empty; 
+    public string Title { get; set; }
+    public decimal Amount { get; set; }
     public DateTime Date { get; set; }
-    public int? AllocationId { get; set; } 
+    public int? ExpectedIncomeId { get; set; } 
 }

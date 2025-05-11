@@ -1,0 +1,34 @@
+<p-table
+  [value]="incomes"
+  [rows]="25"
+  [paginator]="true"
+  [scrollable]="true"
+  [scrollHeight]="'400px'"
+>
+  <ng-template #header>
+    <tr>
+      <th class="w-14">Date</th>
+      <th>Title</th>
+      <th class="w-14">Amount</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-income>
+    <tr (click)="handleRowSelect(income)" [className]="'cursor-pointer'">
+      <td>{{ formatDate(income.date) }}</td>
+      <td>{{ income.title }}</td>
+
+      <td>{{ formatMoney(income.amount) }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog
+  appendTo="body"
+  [modal]="true"
+  [(visible)]="dialogVisible"
+  header="Update Income"
+>
+  <app-income-manager
+    [income]="selectedIncome"
+    [expectedIncomeId]="selectedIncome?.expectedIncomeId"
+  ></app-income-manager>
+</p-dialog>

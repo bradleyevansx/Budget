@@ -1,8 +1,8 @@
-using System.Transactions;
-using Back.Business.Transactions;
+using Back.Business.Income;
 using Back.Data;
 using Back.Models;
+using Back.Repositories.Transactions;
 
-namespace Back.Repositories.Transactions;
+namespace Back.Repositories.Income;
 
-public class IncomeRepository(AppDbContext context) : BaseRepository<DbTransaction, BusTransaction, UpdateDbTransaction>(context);
+public class IncomeRepository(AppDbContext context) : BaseRepository<DbIncome, BusIncome, UpdateDbIncome>(context);
