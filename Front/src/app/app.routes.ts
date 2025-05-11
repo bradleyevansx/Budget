@@ -2,9 +2,6 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
-import { TransactionManagerComponent } from './transaction-manager/transaction-manager.component';
-import { TransactionsTableComponent } from './monthly-allocations/transactions/transactions-table/transactions-table.component';
-import { TransactionsGraphsComponent } from './transactions-graphs/transactions-graphs.component';
 import { MonthlyAllocationsComponent } from './monthly-allocations/monthly-allocations.component';
 
 export const routes: Routes = [
