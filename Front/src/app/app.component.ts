@@ -26,33 +26,9 @@ export class AppComponent {
   getItems(): MenuItem[] {
     return [
       {
-        label: 'Home',
-        icon: PrimeIcons.HOME,
-        routerLink: ['/'],
-        visible: this.isAuthed,
-      },
-      {
-        label: 'New',
-        icon: PrimeIcons.PLUS,
-        routerLink: ['/new-transaction'],
-        visible: this.isAuthed,
-      },
-      {
-        label: 'Chart',
-        icon: PrimeIcons.CHART_PIE,
-        routerLink: ['/chart'],
-        visible: this.isAuthed,
-      },
-      {
-        label: 'Table',
-        icon: PrimeIcons.TABLE,
-        routerLink: ['/table'],
-        visible: this.isAuthed,
-      },
-      {
-        label: 'Allocations',
+        label: 'Dashboard',
         icon: PrimeIcons.PENCIL,
-        routerLink: ['/allocations'],
+        routerLink: ['/dashboard'],
         visible: this.isAuthed,
       },
       {

@@ -11,22 +11,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   {
-    path: 'new-transaction',
-    component: TransactionManagerComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'table',
-    component: TransactionsTableComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'chart',
-    component: TransactionsGraphsComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'allocations',
+    path: 'dashboard',
     component: MonthlyAllocationsComponent,
     canActivate: [AuthGuard],
   },
