@@ -1,86 +1,111 @@
 <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-  <p-card>
-    <div class="flex justify-between mb-4">
-      <div>
-        <span class="block text-muted-color font-medium mb-4">Allocated</span>
-        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          {{ totalAllocationsAmount }}
+  <ng-container *ngIf="loading; else allocatedCard">
+    <p-skeleton height="8rem" width="100%"></p-skeleton>
+  </ng-container>
+  <ng-template #allocatedCard>
+    <p-card>
+      <div class="flex justify-between mb-4">
+        <div>
+          <span class="block text-muted-color font-medium mb-4">Allocated</span>
+          <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+            {{ totalAllocationsAmount }}
+          </div>
         </div>
-      </div>
-      <div
-        class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
-        style="width: 2.5rem; height: 2.5rem"
-      >
-        <i class="pi pi-folder-open text-blue-500 !text-xl"></i>
-      </div>
-    </div>
-    <span class="text-primary font-medium">{{ totalAllocations }} total </span>
-    <span class="text-muted-color">allocation groups</span>
-  </p-card>
-</div>
-<div class="col-span-12 lg:col-span-6 xl:col-span-3">
-  <p-card>
-    <div class="flex justify-between mb-4">
-      <div>
-        <span class="block text-muted-color font-medium mb-4">Spent</span>
-        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          {{ totalSpent }}
-        </div>
-      </div>
-      <div
-        class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border"
-        style="width: 2.5rem; height: 2.5rem"
-      >
-        <i class="pi pi-dollar text-orange-500 !text-xl"></i>
-      </div>
-    </div>
-    <span class="text-primary font-medium"
-      >{{ increaseFromLastWeekSpent }}
-    </span>
-    <span class="text-muted-color">since last week</span>
-  </p-card>
-</div>
-<div class="col-span-12 lg:col-span-6 xl:col-span-3">
-  <p-card>
-    <div class="flex justify-between mb-4">
-      <div>
-        <span class="block text-muted-color font-medium mb-4"
-          >Expected Income</span
+        <div
+          class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
+          style="width: 2.5rem; height: 2.5rem"
         >
-        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          {{ totalFromExpectedIncomes }}
+          <i class="pi pi-folder-open text-blue-500 !text-xl"></i>
         </div>
       </div>
-      <div
-        class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
-        style="width: 2.5rem; height: 2.5rem"
-      >
-        <i class="pi pi-chart-line text-cyan-500 !text-xl"></i>
-      </div>
-    </div>
-    <span class="text-primary font-medium">{{ expectedIncomes.length }}</span>
-    <span class="text-muted-color"> total income sources</span>
-  </p-card>
+      <span class="text-primary font-medium"
+        >{{ totalAllocations }} total
+      </span>
+      <span class="text-muted-color">allocation groups</span>
+    </p-card>
+  </ng-template>
 </div>
+
 <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-  <p-card>
-    <div class="flex justify-between mb-4">
-      <div>
-        <span class="block text-muted-color font-medium mb-4">Income</span>
-        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-          {{ totalFromIncomes }}
+  <ng-container *ngIf="loading; else spentCard">
+    <p-skeleton height="8rem" width="100%"></p-skeleton>
+  </ng-container>
+  <ng-template #spentCard>
+    <p-card>
+      <div class="flex justify-between mb-4">
+        <div>
+          <span class="block text-muted-color font-medium mb-4">Spent</span>
+          <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+            {{ totalSpent }}
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border"
+          style="width: 2.5rem; height: 2.5rem"
+        >
+          <i class="pi pi-dollar text-orange-500 !text-xl"></i>
         </div>
       </div>
-      <div
-        class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border"
-        style="width: 2.5rem; height: 2.5rem"
-      >
-        <i class="pi pi-money-bill text-purple-500 !text-xl"></i>
+      <span class="text-primary font-medium"
+        >{{ increaseFromLastWeekSpent }}
+      </span>
+      <span class="text-muted-color">since last week</span>
+    </p-card>
+  </ng-template>
+</div>
+
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+  <ng-container *ngIf="loading; else expectedIncomeCard">
+    <p-skeleton height="8rem" width="100%"></p-skeleton>
+  </ng-container>
+  <ng-template #expectedIncomeCard>
+    <p-card>
+      <div class="flex justify-between mb-4">
+        <div>
+          <span class="block text-muted-color font-medium mb-4"
+            >Expected Income</span
+          >
+          <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+            {{ totalFromExpectedIncomes }}
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
+          style="width: 2.5rem; height: 2.5rem"
+        >
+          <i class="pi pi-chart-line text-cyan-500 !text-xl"></i>
+        </div>
       </div>
-    </div>
-    <span class="text-primary font-medium"
-      >{{ increaseFromLastWeekEarned }}
-    </span>
-    <span class="text-muted-color">since last week</span>
-  </p-card>
+      <span class="text-primary font-medium">{{ expectedIncomes.length }}</span>
+      <span class="text-muted-color"> total income sources</span>
+    </p-card>
+  </ng-template>
+</div>
+
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+  <ng-container *ngIf="loading; else incomeCard">
+    <p-skeleton height="8rem" width="100%"></p-skeleton>
+  </ng-container>
+  <ng-template #incomeCard>
+    <p-card>
+      <div class="flex justify-between mb-4">
+        <div>
+          <span class="block text-muted-color font-medium mb-4">Income</span>
+          <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+            {{ totalFromIncomes }}
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border"
+          style="width: 2.5rem; height: 2.5rem"
+        >
+          <i class="pi pi-money-bill text-purple-500 !text-xl"></i>
+        </div>
+      </div>
+      <span class="text-primary font-medium"
+        >{{ increaseFromLastWeekEarned }}
+      </span>
+      <span class="text-muted-color">since last week</span>
+    </p-card>
+  </ng-template>
 </div>

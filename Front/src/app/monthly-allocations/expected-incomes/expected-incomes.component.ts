@@ -9,10 +9,12 @@ import { ExpectedIncome } from '../../core/models/expected-income.model';
 import { Income } from '../../core/models/income.model';
 import { ExpectedIncomeManagerComponent } from './expected-income-manager/expected-income-manager.component';
 import { ExpectedIncomeRowComponent } from './expected-income-row/expected-income-row.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-expected-incomes',
   imports: [
+    SkeletonModule,
     DialogModule,
     CommonModule,
     ButtonModule,
@@ -28,7 +30,11 @@ export class ExpectedIncomesComponent {
   expectedIncomes: ExpectedIncome[] = [];
   incomes: Income[] = [];
   expectedIncomeJoin: (ExpectedIncome & { incomes: Income[] })[] = [];
+  loading: boolean = false;
   constructor(private ms: MonthlyService) {
+    this.ms.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
     this.ms.expectedIncomes$.subscribe((expectedIncomes) => {
       this.expectedIncomes = expectedIncomes;
       this.joinExpectedIncomesAndIncomes();

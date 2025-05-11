@@ -23,6 +23,8 @@ export class MonthlyService {
   private usersSubject = new BehaviorSubject<User[]>([]);
   private incomesSubject = new BehaviorSubject<Income[]>([]);
   private expectedIncomesSubject = new BehaviorSubject<ExpectedIncome[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false); // New loading subject
+
   selectedMonth: Date = new Date();
 
   allocations$ = this.allocationsSubject.asObservable();
@@ -30,6 +32,7 @@ export class MonthlyService {
   users$ = this.usersSubject.asObservable();
   incomes$ = this.incomesSubject.asObservable();
   expectedIncomes$ = this.expectedIncomesSubject.asObservable();
+  loading$ = this.loadingSubject.asObservable(); // Expose loading observable
 
   constructor(
     private as: AllocationService,
@@ -58,6 +61,7 @@ export class MonthlyService {
   }
 
   initExpectedIncomes() {
+    this.setLoading(true);
     this.eis
       .getWhere({
         operator: Operator.And,
@@ -86,7 +90,6 @@ export class MonthlyService {
           },
         ],
       })
-
       .subscribe((res) => {
         if (res.loading) return;
         const expectedIncomes = res.data.map((x) => ({
@@ -122,10 +125,12 @@ export class MonthlyService {
       );
       incomes.sort((a, b) => a.date.getTime() - b.date.getTime());
       this.incomesSubject.next(incomes);
+      this.setLoading(false);
     });
   }
 
   initAllocations() {
+    this.setLoading(true);
     this.as
       .getWhere({
         operator: Operator.And,
@@ -190,6 +195,11 @@ export class MonthlyService {
       );
       transactions.sort((a, b) => a.date.getTime() - b.date.getTime());
       this.transactionsSubject.next(transactions);
+      this.setLoading(false);
     });
+  }
+
+  private setLoading(isLoading: boolean) {
+    this.loadingSubject.next(isLoading);
   }
 }

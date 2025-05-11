@@ -9,6 +9,7 @@ import { Allocation } from '../../core/models/allocation.model';
 import { Transaction } from '../../core/models/transaction.model';
 import { NewAllocationComponent } from './allocation-manager/allocation-manager.component';
 import { DialogModule } from 'primeng/dialog';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-allocations',
@@ -20,16 +21,21 @@ import { DialogModule } from 'primeng/dialog';
     CardModule,
     AllocationRowComponent,
     NewAllocationComponent,
+    SkeletonModule,
   ],
   templateUrl: './allocations.component.html',
   styleUrl: './allocations.component.css',
 })
 export class AllocationsComponent {
+  loading: boolean = false;
   allocations: Allocation[] = [];
   transactions: Transaction[] = [];
   allocationTransactionJoin: (Allocation & { transactions: Transaction[] })[] =
     [];
   constructor(private ms: MonthlyService) {
+    this.ms.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
     this.ms.allocations$.subscribe((allocations) => {
       this.allocations = allocations;
       this.joinAllocationsAndTransactions();

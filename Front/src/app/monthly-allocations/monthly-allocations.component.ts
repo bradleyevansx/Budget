@@ -28,5 +28,10 @@ import { ExpectedIncomesComponent } from './expected-incomes/expected-incomes.co
   styleUrl: './monthly-allocations.component.css',
 })
 export class MonthlyAllocationsComponent {
-  constructor() {}
+  loading: boolean = false;
+  constructor(private ms: MonthlyService) {
+    this.ms.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
+  }
 }

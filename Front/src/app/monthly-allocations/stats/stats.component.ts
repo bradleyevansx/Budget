@@ -6,10 +6,11 @@ import { Allocation } from '../../core/models/allocation.model';
 import { Transaction } from '../../core/models/transaction.model';
 import { ExpectedIncome } from '../../core/models/expected-income.model';
 import { Income } from '../../core/models/income.model';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-stats',
-  imports: [CommonModule, CardModule],
+  imports: [CommonModule, CardModule, SkeletonModule],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.css',
 })
@@ -18,8 +19,12 @@ export class StatsComponent {
   transactions: Transaction[] = [];
   expectedIncomes: ExpectedIncome[] = [];
   incomes: Income[] = [];
+  loading: boolean = false;
 
   constructor(private ms: MonthlyService) {
+    this.ms.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
     this.ms.allocations$.subscribe((allocations) => {
       this.allocations = allocations;
     });
