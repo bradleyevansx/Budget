@@ -51,14 +51,27 @@ export class AllocationRowComponent {
   }
 
   statsOptions = [
-    'Average Transaction Amount',
-    'Largest Transaction',
-    'Oldest Transaction',
-    'Days Since Last Transaction',
-    'User With Most Transactions',
-    'Transaction Count',
-    'Remaining Budget',
+    'Avg Transaction',
+    'Largest',
+    'Oldest',
+    'Days Since Last',
+    'Top User',
+    'Transactions',
+    'Remaining',
   ];
+
+  get statsMap() {
+    return {
+      'Avg Transaction': this.averageTransactionAmount,
+      Largest: this.largestTransaction,
+      Oldest: this.oldestTransaction,
+      'Days Since Last': this.daysSinceLastTransaction,
+      'Top User': this.userWithMostTransactions,
+      Transactions: this.transactionCount,
+      Remaining: this.remainingBudget,
+    };
+  }
+
   currStats = [];
   statsQueue = [];
 
@@ -84,41 +97,26 @@ export class AllocationRowComponent {
     }
   }
 
-  getClass(stat: string) {
-    if (!this.currStats.includes(stat)) {
-      return 'hidden';
-    }
-    return 'whitespace-nowrap w-full';
-  }
-
   handleStatClick(event: Event, stat: string) {
+    const currIndex = this.currStats.indexOf(stat);
     event.stopPropagation();
     const frontOfQueue = this.statsQueue.shift();
-    const newCurr = [...this.currStats.filter((s) => s !== stat), frontOfQueue];
-    this.currStats = newCurr;
+    if (currIndex === 0) {
+      this.currStats = [
+        frontOfQueue,
+        ...this.currStats.filter((s) => s !== stat),
+      ];
+    } else {
+      this.currStats = [
+        ...this.currStats.filter((s) => s !== stat),
+        frontOfQueue,
+      ];
+    }
     this.statsQueue.push(stat);
   }
 
   get allocationName(): string {
     return this.allocation.name;
-  }
-
-  get mostRecentTransactionDisplay(): string {
-    const mostRecentTransaction = this.allocation.transactions.reduce(
-      (prev, current) => {
-        return prev.date > current.date ? prev : current;
-      },
-      this.allocation.transactions[0]
-    );
-    if (!mostRecentTransaction) {
-      return 'No transactions';
-    }
-
-    return `${mostRecentTransaction.date.toLocaleDateString()} - ${
-      this.users.find((x) => x.id === mostRecentTransaction.userId)?.firstName
-    } spent $${mostRecentTransaction.price} at ${
-      mostRecentTransaction.location
-    }`;
   }
 
   get percentUsed(): number {
@@ -165,10 +163,12 @@ export class AllocationRowComponent {
   }
 
   get allocationAmount(): string {
+    if (!this.allocation) return 'No transactions';
     return toUsdString(this.allocation.amount);
   }
 
   get remainingBudget(): string {
+    if (!this.allocation) return 'No transactions';
     const totalSpent = this.allocation.transactions.reduce(
       (acc, transaction) => acc + (transaction.price || 0),
       0
@@ -177,11 +177,13 @@ export class AllocationRowComponent {
     return toUsdString(remaining);
   }
 
-  get transactionCount(): number {
-    return this.allocation.transactions.length;
+  get transactionCount(): string {
+    if (!this.allocation) return 'No transactions';
+    return this.allocation.transactions.length.toString();
   }
 
   get averageTransactionAmount(): string {
+    if (!this.allocation) return 'No transactions';
     const totalSpent = this.allocation.transactions.reduce(
       (acc, transaction) => acc + (transaction.price || 0),
       0
@@ -199,6 +201,7 @@ export class AllocationRowComponent {
   }
 
   get largestTransaction(): string {
+    if (!this.allocation) return 'No transactions';
     const largest = this.allocation.transactions.reduce(
       (prev, current) => (prev.price > current.price ? prev : current),
       this.allocation.transactions[0]
@@ -211,6 +214,7 @@ export class AllocationRowComponent {
   }
 
   get oldestTransaction(): string {
+    if (!this.allocation) return 'No transactions';
     const oldest = this.allocation.transactions.reduce(
       (prev, current) => (prev.date < current.date ? prev : current),
       this.allocation.transactions[0]
@@ -223,6 +227,7 @@ export class AllocationRowComponent {
   }
 
   get daysSinceLastTransaction(): string {
+    if (!this.allocation) return 'No transactions';
     const mostRecentTransaction = this.allocation.transactions.reduce(
       (prev, current) => (prev.date > current.date ? prev : current),
       this.allocation.transactions[0]
@@ -238,6 +243,7 @@ export class AllocationRowComponent {
   }
 
   get userWithMostTransactions(): string {
+    if (!this.allocation) return 'No transactions';
     const userTransactionCounts = this.allocation.transactions.reduce(
       (acc, transaction) => {
         acc[transaction.userId] = (acc[transaction.userId] || 0) + 1;
@@ -253,9 +259,9 @@ export class AllocationRowComponent {
       return 'No transactions';
     }
 
-    return `User ${
-      this.users.find((x) => x.id === Number(maxUserId))?.firstName
-    } (${userTransactionCounts[maxUserId]} transactions)`;
+    return `${this.users.find((x) => x.id === Number(maxUserId))?.firstName} (${
+      userTransactionCounts[maxUserId]
+    } transactions)`;
   }
 
   colors = [
