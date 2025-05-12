@@ -4,10 +4,11 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { AuthService } from './core/services/auth.service';
 import { MonthSelectComponent } from './core/components/month-select/month-select.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MenubarModule, MonthSelectComponent],
+  imports: [RouterOutlet, MenubarModule, MonthSelectComponent, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

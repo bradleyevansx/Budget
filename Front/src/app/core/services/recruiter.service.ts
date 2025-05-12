@@ -11,9 +11,18 @@ export class RecruiterService {
   );
   message$: Observable<string> = this.messageSubject.asObservable();
 
+  private welcomeTrigger: BehaviorSubject<void> = new BehaviorSubject<void>(
+    undefined
+  );
+  welcomeTrigger$: Observable<void> = this.welcomeTrigger.asObservable();
+
   sendMessage(message: string): void {
     this.messageSubject.next(
       'A change was attempted by someone with READONLY access. Your changes were received but not saved.'
     );
+  }
+
+  triggerWelcome(): void {
+    this.welcomeTrigger.next();
   }
 }

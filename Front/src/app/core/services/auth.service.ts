@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { get } from 'node:http';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { RecruiterService } from './recruiter.service';
 
 type AuthStatus = 'authenticated' | 'unauthenticated';
 
@@ -12,16 +14,23 @@ export class AuthService {
     new BehaviorSubject<AuthStatus>('unauthenticated');
   status$ = this.statusSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private rs: RecruiterService
+  ) {}
 
   isAuthed(): Observable<boolean> {
     if (typeof window === 'undefined') {
       return of(false);
     }
-    const urlParams = new URLSearchParams(window.location.search);
-    const jwt = urlParams.get('jwt');
-    if (jwt) {
-      localStorage.setItem('auth_token', jwt);
+    if (!this.getToken()) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const jwt = urlParams.get('jwt');
+      if (jwt) {
+        localStorage.setItem('auth_token', jwt);
+        this.rs.triggerWelcome();
+      }
     }
     return this.http
       .get<{ token: string }>('/api/auth/try-auth', { observe: 'response' })

@@ -27,7 +27,6 @@ import { RecruiterService } from '../core/services/recruiter.service';
 })
 export class MonthlyAllocationsComponent {
   loading: boolean = false;
-  message: string = '';
 
   constructor(
     private ms: MonthlyService,
@@ -38,19 +37,25 @@ export class MonthlyAllocationsComponent {
       this.loading = loading;
     });
     this.rs.message$.subscribe((message) => {
-      this.message = message;
       if (message) {
-        this.show();
+        this.show(message, 3000);
       }
+    });
+
+    this.rs.welcomeTrigger$.subscribe(() => {
+      this.show(
+        'Welcome to my budgeting app! You have read-only access, but any CUD operation will trigger the same behaviour as it would if you had full access.',
+        10000
+      );
     });
   }
 
-  show() {
+  show(message: string = '', life: number = 3000): void {
     this.messageService.add({
       severity: 'info',
       summary: 'Info',
-      detail: this.message,
-      life: 3000,
+      detail: message,
+      life,
     });
   }
 }
