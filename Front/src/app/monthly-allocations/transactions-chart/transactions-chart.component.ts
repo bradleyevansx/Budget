@@ -22,10 +22,10 @@ import { SkeletonModule } from 'primeng/skeleton';
   styleUrl: './transactions-chart.component.css',
 })
 export class TransactionsChartComponent {
-  timeFraming: 'Weekly' | 'Daily' = 'Weekly';
+  timeFraming: 'Weekly' | 'Daily' = 'Daily';
   loading: boolean = false;
 
-  grouping: 'User' | 'Allocation' = 'User';
+  grouping: 'User' | 'Allocation' = 'Allocation';
 
   chartData: any;
   transactions: Transaction[] = [];
