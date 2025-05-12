@@ -1,9 +1,12 @@
 <div class="grid grid-cols-12 gap-4 overflow-y-auto h-full pt-4">
   <app-stats class="contents"></app-stats>
+  <div class="col-span-12 xl:col-span-6 flex flex-col gap-4">
+    <app-allocations></app-allocations>
+    <app-transactions></app-transactions>
+  </div>
 
-  <app-allocations class="col-span-12 xl:col-span-6"></app-allocations>
-  <app-expected-incomes
-    class="col-span-12 xl:col-span-6"
-  ></app-expected-incomes>
-  <app-transactions class="col-span-12 xl:col-span-6"></app-transactions>
+  <div class="col-span-12 xl:col-span-6 flex flex-col gap-4">
+    <app-transactions-chart></app-transactions-chart>
+    <app-expected-incomes></app-expected-incomes>
+  </div>
 </div>

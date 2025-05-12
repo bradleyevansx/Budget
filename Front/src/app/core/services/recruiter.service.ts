@@ -11,10 +11,9 @@ export class RecruiterService {
   );
   message$: Observable<string> = this.messageSubject.asObservable();
 
-  private welcomeTrigger: BehaviorSubject<void> = new BehaviorSubject<void>(
-    undefined
-  );
-  welcomeTrigger$: Observable<void> = this.welcomeTrigger.asObservable();
+  private welcomeTrigger: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  welcomeTrigger$: Observable<boolean> = this.welcomeTrigger.asObservable();
 
   sendMessage(message: string): void {
     this.messageSubject.next(
@@ -23,6 +22,6 @@ export class RecruiterService {
   }
 
   triggerWelcome(): void {
-    this.welcomeTrigger.next();
+    this.welcomeTrigger.next(true);
   }
 }

@@ -10,6 +10,7 @@ import { ExpectedIncomesComponent } from './expected-incomes/expected-incomes.co
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RecruiterService } from '../core/services/recruiter.service';
+import { TransactionsChartComponent } from './transactions-chart/transactions-chart.component';
 @Component({
   selector: 'app-monthly-allocations',
   imports: [
@@ -21,6 +22,7 @@ import { RecruiterService } from '../core/services/recruiter.service';
     TransactionsComponent,
     ExpectedIncomesComponent,
     ToastModule,
+    TransactionsChartComponent,
   ],
   templateUrl: './monthly-allocations.component.html',
   styleUrl: './monthly-allocations.component.css',
@@ -42,11 +44,13 @@ export class MonthlyAllocationsComponent {
       }
     });
 
-    this.rs.welcomeTrigger$.subscribe(() => {
-      this.show(
-        'Welcome to my budgeting app! You have read-only access, but any CUD operation will trigger the same behaviour as it would if you had full access.',
-        10000
-      );
+    this.rs.welcomeTrigger$.subscribe((triggered) => {
+      if (triggered) {
+        this.show(
+          'Welcome to my budgeting app! You have read-only access, but any CUD operation will trigger the same behaviour as it would if you had full access.',
+          10000
+        );
+      }
     });
   }
 
