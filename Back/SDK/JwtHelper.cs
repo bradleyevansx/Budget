@@ -18,6 +18,7 @@ public static class JwtTokenHelper
         {
             Subject = new ClaimsIdentity(new[]
             {
+                new Claim(ClaimTypes.Role, "Lover"),
                 new Claim(ClaimTypes.Name, user.FirstName),
                 new Claim(ClaimTypes.Name, user.LastName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
@@ -31,5 +32,27 @@ public static class JwtTokenHelper
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public static string GenerateRecruiterToken(string secretKey)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(secretKey);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Role, "Recruiter"),
+            }),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature
+            )
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token); 
     }
 }

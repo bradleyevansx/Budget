@@ -64,8 +64,15 @@ public class AuthController: ControllerBase
 
     [Authorize]
     [HttpGet("try-auth")]
-    public async Task<IActionResult> TryAuth()
+    public IActionResult TryAuth()
     {
         return Ok();
+    }
+
+    [HttpPost("recruiter")]
+    public IActionResult Recruiter()
+    {
+        var token = JwtTokenHelper.GenerateRecruiterToken(_config["Jwt:Key"]!);
+        return Ok(new { token });
     }
 }
