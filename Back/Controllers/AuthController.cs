@@ -1,6 +1,7 @@
 using Back.Business.Users;
 using Back.Data;
 using Back.Models;
+using Back.Repositories.RecruiterView;
 using Back.Repositories.Users;
 using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
@@ -17,12 +18,14 @@ public class AuthController: ControllerBase
     private readonly AppDbContext _context;
     private readonly IConfiguration _config;
     private readonly UserRepository _userRepo;
+    private readonly RecruiterViewRepository _recruiterViewRepo;
     
-    public AuthController(AppDbContext context, IConfiguration config, UserRepository userRepo)
+    public AuthController(AppDbContext context, IConfiguration config, UserRepository userRepo, RecruiterViewRepository recruiterViewRepo)
     {
         _context = context;
         _config = config;
         _userRepo = userRepo;
+        _recruiterViewRepo = recruiterViewRepo;
     }
 
     [HttpPost("login")]
@@ -70,8 +73,13 @@ public class AuthController: ControllerBase
     }
 
     [HttpPost("recruiter")]
-    public IActionResult Recruiter()
+    public async Task<IActionResult> Recruiter()
     {
+        var view = new DbRecruiterView();
+        view.CreatedAt = DateTime.UtcNow;
+        
+        var res = await _recruiterViewRepo.CreateAsync(view);
+        
         var token = JwtTokenHelper.GenerateRecruiterToken(_config["Jwt:Key"]!);
         return Ok(new { token });
     }

@@ -8,6 +8,7 @@ using Back.Data;
 using Back.Repositories.Allocations;
 using Back.Repositories.ExpectedIncome;
 using Back.Repositories.Income;
+using Back.Repositories.RecruiterView;
 using Back.Repositories.Transactions;
 using Back.Repositories.Users;
 using Back.SDK;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IncomeBus>();
 builder.Services.AddScoped<IncomeRepository>();
 builder.Services.AddScoped<ExpectedIncomeBus>();
 builder.Services.AddScoped<ExpectedIncomeRepository>();
+builder.Services.AddScoped<RecruiterViewRepository>();    
 
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
