@@ -1,11 +1,13 @@
-import { environment } from "../../src/environments/environment.prod";
 exports.handler = async (event, context) => {
   try {
-    const response = await fetch(environment.apiUrl + "/api/recruiter", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role: "recruiter" }),
-    });
+    const response = await fetch(
+      "https://budget-mxxe.onrender.com/api/recruiter",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: "recruiter" }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to generate JWT");
