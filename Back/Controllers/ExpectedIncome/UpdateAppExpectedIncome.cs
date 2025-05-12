@@ -6,9 +6,10 @@ namespace Back.Controllers.Allocations;
 public class UpdateAppExpectedIncome
 {
     public int Id { get; set; }
+    public int? UserId { get; set; }
     public string? Name { get; set; }
     public decimal? Amount { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public UpdateBusExpectedIncome ToBus()
     {
