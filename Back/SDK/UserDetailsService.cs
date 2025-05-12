@@ -19,4 +19,12 @@ public class UserDetailsService
         var userIdInt = int.Parse(userIdString);
         return userIdInt;
     }
+
+    public string? GetRole()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        var userRole = user?.FindFirst(ClaimTypes.Role)?.Value;
+            
+        return userRole;
+    }
 }
