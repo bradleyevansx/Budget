@@ -8,9 +8,10 @@ public class NewBusExpectedIncome : INewBusEntity
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
 
-    public DbExpectedIncome ToDb()
+    public DbExpectedIncome ToDb(int userId)
     {
         var res = new DbExpectedIncome();
+        res.UserId = userId;
         res.Name = Name;
         res.Date = Date;
         res.Amount = Amount;

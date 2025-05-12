@@ -19,7 +19,8 @@ public class ExpectedIncomeBus : IBusiness<BusExpectedIncome, NewBusExpectedInco
     
     public async Task<BusExpectedIncome> CreateAsync(NewBusExpectedIncome entity)
     {
-        var db = entity.ToDb();
+        var userId = _userDetailsService.GetUserId();
+        var db = entity.ToDb(userId);
         var res = await _repository.CreateAsync(db);
         return res.ToBus();
     }
