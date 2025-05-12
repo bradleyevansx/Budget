@@ -1,7 +1,7 @@
 import { environment } from "../../src/environments/environment.prod";
 exports.handler = async (event, context) => {
   try {
-    const response = await fetch(environment.apiUrl + "/recruiter", {
+    const response = await fetch(environment.apiUrl + "/api/recruiter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ role: "recruiter" }),
