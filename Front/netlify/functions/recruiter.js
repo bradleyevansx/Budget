@@ -1,7 +1,7 @@
 exports.handler = async (event, context) => {
   try {
     const response = await fetch(
-      "https://budget-mxxe.onrender.com/api/recruiter",
+      "https://budget-mxxe.onrender.com/api/auth/recruiter",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
