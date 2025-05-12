@@ -13,9 +13,9 @@ exports.handler = async (event, context) => {
       throw new Error("Failed to generate JWT");
     }
 
-    const { jwt } = await response.json();
+    const { token } = await response.json();
 
-    const redirectUrl = `https://budget.bradleyevans.dev/dashboard?jwt=${jwt}`;
+    const redirectUrl = `https://budget.bradleyevans.dev/dashboard?jwt=${token}`;
 
     return {
       statusCode: 302,

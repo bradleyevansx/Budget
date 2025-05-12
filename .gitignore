@@ -19,3 +19,6 @@ Back/obj/Debug/net9.0/staticwebassets.*
 
 
 
+
+# Local Netlify folder
+.netlify
