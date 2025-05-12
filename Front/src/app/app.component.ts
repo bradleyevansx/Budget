@@ -50,6 +50,5 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.initItems();
-    this.isAuthed = this.authService.isAuthenticated();
   }
 }

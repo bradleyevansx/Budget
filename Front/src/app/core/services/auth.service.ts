@@ -14,11 +14,15 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  isAuthenticated(): boolean {
-    return typeof window !== 'undefined' && this.getToken() !== null;
-  }
-
   isAuthed(): Observable<boolean> {
+    if (typeof window === 'undefined') {
+      return of(false);
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const jwt = urlParams.get('jwt');
+    if (jwt) {
+      localStorage.setItem('auth_token', jwt);
+    }
     return this.http
       .get<{ token: string }>('/api/auth/try-auth', { observe: 'response' })
       .pipe(
