@@ -1,18 +1,20 @@
 <p-card *ngIf="!loading; else loadingSkeleton">
   <div class="flex justify-between items-center mb-4">
-    <div class="font-semibold text-xl">Revenue Stream</div>
+    <div class="font-semibold text-xl">
+      {{ timeFraming }} {{ grouping }} View
+    </div>
     <div class="flex gap-2">
       <button
         pButton
         type="button"
-        label="Toggle Time Frame"
+        label="Time Frame"
         class="p-button-text"
         (click)="toggleTimeFrame()"
       ></button>
       <button
         pButton
         type="button"
-        label="Toggle Grouping"
+        label="Grouping"
         class="p-button-text"
         (click)="toggleGrouping()"
       ></button>
