@@ -2,7 +2,7 @@
   class="grid grid-cols-1 md:grid-cols-4 cursor-pointer"
   (click)="showDialog()"
 >
-  <div class="w-60">
+  <div class="w-60 md:w-full overflow-hidden">
     <span
       class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
       >{{ allocationName }}</span
@@ -11,16 +11,16 @@
   </div>
   <div
     *ngFor="let stat of currStats"
-    class="truncate w-fit text-muted-color text-sm"
+    class="truncate w-fit text-muted-color text-sm md:w-full overflow-hidden"
     (click)="handleStatClick($event, stat)"
   >
     <span class="truncate text-muted-color-emphasis w-fit">{{ stat }}:</span>
     <div class="truncate">{{ statsMap[stat] }}</div>
   </div>
 
-  <div class="mt-2 md:mt-0 flex items-center">
+  <div class="mt-2 md:mt-0 flex items-center md:w-full overflow-hidden">
     <div
-      class="bg-surface-300 dark:bg-surface-500 rounded-border overflow-hidden w-40 lg:w-24"
+      class="bg-surface-300 dark:bg-surface-500 rounded-border overflow-hidden w-40 lg:w-24 md:w-full"
       style="height: 8px"
     >
       <div
