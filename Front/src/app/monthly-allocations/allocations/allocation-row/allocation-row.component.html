@@ -12,10 +12,14 @@
   <div
     *ngFor="let stat of currStats"
     class="truncate w-fit text-muted-color text-sm md:w-full overflow-hidden"
-    (click)="handleStatClick($event, stat)"
   >
-    <span class="truncate text-muted-color-emphasis w-fit">{{ stat }}:</span>
-    <div class="truncate">{{ statsMap[stat] }}</div>
+    <div
+      class="hover:bg-surface-50 w-fit max-w-full px-2 py-1 rounded-2xl"
+      (click)="handleStatClick($event, stat)"
+    >
+      <span class="truncate text-muted-color-emphasis w-fit">{{ stat }}:</span>
+      <div class="truncate">{{ statsMap[stat] }}</div>
+    </div>
   </div>
 
   <div class="mt-2 md:mt-0 flex items-center md:w-full overflow-hidden">

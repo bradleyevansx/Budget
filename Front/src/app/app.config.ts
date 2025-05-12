@@ -18,6 +18,7 @@ import {
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { provideHttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,5 +34,6 @@ export const appConfig: ApplicationConfig = {
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
+    MessageService,
   ],
 };

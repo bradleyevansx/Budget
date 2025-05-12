@@ -8,19 +8,22 @@ import {
   LoadingState,
   switchMapWithLoading,
 } from '../sdk/switchMapWithLoading';
+import { RecruiterService } from './recruiter.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExpectedIncomeService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private rs: RecruiterService) {}
 
   getWhere(
     query?: QueryLayer<ExpectedIncome>
   ): Observable<LoadingState<ExpectedIncome[]>> {
     return of(query).pipe(
-      switchMapWithLoading((q) =>
-        this.http.post<ExpectedIncome[]>('/api/expectedincome/get', {
-          query: q,
-        })
+      switchMapWithLoading(
+        (q) =>
+          this.http.post<ExpectedIncome[]>('/api/expectedincome/get', {
+            query: q,
+          }),
+        this.rs
       )
     );
   }
@@ -29,18 +32,21 @@ export class ExpectedIncomeService {
     t: Omit<Omit<ExpectedIncome, 'id'>, 'userId'>
   ): Observable<LoadingState<ExpectedIncome>> {
     return of(t).pipe(
-      switchMapWithLoading((data) =>
-        this.http.post<ExpectedIncome>('/api/expectedincome', data)
+      switchMapWithLoading(
+        (data) => this.http.post<ExpectedIncome>('/api/expectedincome', data),
+        this.rs
       )
     );
   }
 
   delete(id: number): Observable<LoadingState<ExpectedIncome>> {
     return of(id).pipe(
-      switchMapWithLoading((ExpectedIncomeId) =>
-        this.http.delete<ExpectedIncome>(
-          `/api/expectedincome/${ExpectedIncomeId}`
-        )
+      switchMapWithLoading(
+        (ExpectedIncomeId) =>
+          this.http.delete<ExpectedIncome>(
+            `/api/expectedincome/${ExpectedIncomeId}`
+          ),
+        this.rs
       )
     );
   }
@@ -49,11 +55,13 @@ export class ExpectedIncomeService {
     t: ExpectedIncome
   ): Observable<LoadingState<Partial<ExpectedIncome> & { id: number }>> {
     return of(t).pipe(
-      switchMapWithLoading((data) =>
-        this.http.patch<Partial<ExpectedIncome> & { id: number }>(
-          `/api/expectedincome`,
-          data
-        )
+      switchMapWithLoading(
+        (data) =>
+          this.http.patch<Partial<ExpectedIncome> & { id: number }>(
+            `/api/expectedincome`,
+            data
+          ),
+        this.rs
       )
     );
   }
