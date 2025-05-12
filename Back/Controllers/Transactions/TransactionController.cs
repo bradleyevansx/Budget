@@ -5,6 +5,7 @@ using Back.Business.Transactions;
 using Back.Controllers.Filters;
 using Back.Controllers.Transactions;
 using Back.Models;
+using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,6 +25,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost]
+        [RoleCheck]
     public async Task<IActionResult> CreateTransaction([FromBody] NewAppTransaction entity)
     {
         var bus = entity.ToBus();
@@ -45,6 +47,7 @@ public class TransactionController : ControllerBase
     }
     
     [HttpPatch]
+        [RoleCheck]
     public async Task<IActionResult> UpdateTransaction([FromBody] UpdateAppTransaction entity)
     {
         var bus = entity.ToBus();
@@ -54,6 +57,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+        [RoleCheck]
     public async Task<IActionResult> DeleteById(int id)
     {
         var res = await _transactionBus.DeleteByIdAsync(id);

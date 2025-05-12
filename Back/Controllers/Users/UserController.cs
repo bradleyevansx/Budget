@@ -1,6 +1,7 @@
 using Back.Business.Users;
 using Back.Controllers.Filters;
 using Back.Repositories.Users;
+using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ public class UserController : ControllerBase
         }
     
         [HttpPost]
+        [RoleCheck]
         public async Task<IActionResult> CreateTransaction([FromBody] NewAppUser entity)
         {
             var bus = entity.ToBus();
@@ -39,6 +41,7 @@ public class UserController : ControllerBase
         }
         
         [HttpPatch]
+        [RoleCheck]
         public async Task<IActionResult> UpdateTransaction([FromBody] UpdateAppUser entity)
         {
             var bus = entity.ToBus();
@@ -48,6 +51,7 @@ public class UserController : ControllerBase
         }
     
         [HttpDelete("{id}")]
+        [RoleCheck]
         public async Task<IActionResult> DeleteById(int id)
         {
             var res = await _userBus.DeleteByIdAsync(id);

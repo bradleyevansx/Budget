@@ -2,6 +2,7 @@ using Back.Business.ExpectedIncome;
 using Back.Controllers.Allocations;
 using Back.Controllers.Filters;
 using Back.Repositories.ExpectedIncome;
+using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ public class ExpectedIncomeController : ControllerBase
     }
 
     [HttpPost]
+        [RoleCheck]
     public async Task<IActionResult> Create([FromBody] NewAppExpectedIncome entity)
     {
         var bus = entity.ToBus();
@@ -41,6 +43,7 @@ public class ExpectedIncomeController : ControllerBase
     }
 
     [HttpPatch]
+        [RoleCheck]
     public async Task<IActionResult> Update([FromBody] UpdateAppExpectedIncome entity)
     {
         var bus = entity.ToBus();
@@ -50,6 +53,7 @@ public class ExpectedIncomeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+        [RoleCheck]
     public async Task<IActionResult> DeleteById(int id)
     {
         var res = await _expectedIncomeBus.DeleteByIdAsync(id);

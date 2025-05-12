@@ -3,6 +3,7 @@ using Back.Business.Transactions;
 using Back.Controllers.Filters;
 using Back.Controllers.Transactions;
 using Back.Repositories.Allocations;
+using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ public class AllocationController : ControllerBase
     }
 
     [HttpPost]
+        [RoleCheck]
     public async Task<IActionResult> Create([FromBody] NewAppAllocation entity)
     {
         var bus = entity.ToBus();
@@ -42,6 +44,7 @@ public class AllocationController : ControllerBase
     }
 
     [HttpPatch]
+        [RoleCheck]
     public async Task<IActionResult> Update([FromBody] UpdateAppAllocation entity)
     {
         var bus = entity.ToBus();
@@ -51,6 +54,7 @@ public class AllocationController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+        [RoleCheck]
     public async Task<IActionResult> DeleteById(int id)
     {
         var res = await _allocationBus.DeleteByIdAsync(id);

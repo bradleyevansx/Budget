@@ -6,6 +6,7 @@ using Back.Controllers.Filters;
 using Back.Controllers.Income;
 using Back.Controllers.Transactions;
 using Back.Repositories.Income;
+using Back.SDK;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,6 +26,7 @@ public class IncomeController : ControllerBase
     }
 
     [HttpPost]
+        [RoleCheck]
     public async Task<IActionResult> CreateTransaction([FromBody] NewAppIncome entity)
     {
         var bus = entity.ToBus();
@@ -46,6 +48,7 @@ public class IncomeController : ControllerBase
     }
     
     [HttpPatch]
+        [RoleCheck]
     public async Task<IActionResult> UpdateIncome([FromBody] UpdateAppIncome entity)
     {
         var bus = entity.ToBus();
@@ -55,6 +58,7 @@ public class IncomeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+        [RoleCheck]
     public async Task<IActionResult> DeleteById(int id)
     {
         var res = await _incomeBus.DeleteByIdAsync(id);
