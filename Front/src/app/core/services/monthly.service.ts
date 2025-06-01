@@ -116,6 +116,13 @@ export class MonthlyService {
         ],
       })
     );
+
+    if (incomeRequests.length === 0) {
+      this.incomesSubject.next([]);
+      this.setLoading(false);
+      return;
+    }
+
     forkJoin(incomeRequests).subscribe((responses) => {
       const incomes = responses.flatMap((res) =>
         res.data.map((x) => ({
@@ -185,6 +192,12 @@ export class MonthlyService {
         ],
       })
     );
+
+    if (transactionRequests.length === 0) {
+      this.transactionsSubject.next([]);
+      this.setLoading(false);
+      return;
+    }
 
     forkJoin(transactionRequests).subscribe((responses) => {
       const transactions = responses.flatMap((res) =>
